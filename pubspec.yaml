@@ -2,17 +2,17 @@ name: flutter_oss_licenses
 description: A tool for generating OSS license list using pubspec.lock.
 homepage: https://github.com/espresso3389/flutter_oss_licenses
 author: Takashi Kawasaki <espresso3389@gmail.com>
-version: "0.2.0"
+version: "0.3.0"
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.0.0 <3.0.0"
 
 executables:
   generate:
 
 dependencies:
-  path: ^1.6.2
-  meta: ^1.1.7
-  yaml: ^2.1.16
+  path: ^1.4.0
+  meta: ^1.1.0
+  yaml: ^2.1.0
 
 dev_dependencies:
