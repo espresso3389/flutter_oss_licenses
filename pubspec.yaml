@@ -5,10 +5,10 @@ author: Takashi Kawasaki (@espresso3389)
 version: "0.1.0"
 
 environment:
-  sdk: ">=2.2.2"
+  sdk: ">=2.2.2 <3.0.0"
 
 executables:
-  generate_licenses:
+  generate:
 
 dependencies:
   path: ^1.6.2
