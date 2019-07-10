@@ -11,8 +11,8 @@ executables:
   generate_licenses:
 
 dependencies:
-  path: 
-  meta: 
-  yaml: 
+  path: ^1.6.2
+  meta: ^1.1.7
+  yaml: ^2.1.16
 
 dev_dependencies:
