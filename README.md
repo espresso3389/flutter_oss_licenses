@@ -1,9 +1,25 @@
-# flutter_oss_licenses
-A tool for generating OSS license list using pubspec.lock
+## Introduction
+
+[flutter_oss_licenses](https://pub.dev/packages/flutter_oss_licenses) is a tool for generating OSS license list using `pubspec.lock`.
+
+## Installing
+
+Adding the package name to `dev_dependencies`; not to `dependencies` because the package does nothing on runtime.
+
+```
+dev_dependencies:
+  flutter_oss_licenses: ^0.1.0
+```
 
 ## Generate oss_licenses.dart
 
-The following command generates `oss_licenses.dart` on the project's `lib/` directory:
+Before executing the command, you must update your `pubspec.lock` using `pub get` (or `pub upgrade` if you want).
+
+```shell
+$ flutter pub get
+```
+
+And then, the following command generates `oss_licenses.dart` on the project's `lib/` directory:
 
 ```shell
 $ flutter pub run flutter_oss_licenses:generate.dart
@@ -21,6 +37,8 @@ Map<String, String> oss_licenses = {
 };
 ```
 
+And, you can use the map on your project code in your way. The package does not do anything on the list.
+
 ## Command line options
 
 Either running `generate.dart` using `pub run` or directly, it accepts two or less options. 
@@ -36,3 +54,8 @@ The `bin/generated.dart` uses two environment variables; one is `FLUTTER_ROOT` a
 ## Reporting issues
 
 Report any bugs on the project's [issues](https://github.com/espresso3389/flutter_oss_licenses/issues).
+
+## URLs
+
+- [Project page on GitHub](https://github.com/espresso3389/flutter_oss_licenses)
+- [Flutter package](https://pub.dev/packages/flutter_oss_licenses)

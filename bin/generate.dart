@@ -42,11 +42,13 @@ Map<String, String> oss_licenses = {\n''';
 
   for (final name in deps) {
     final package = packages[name];
-    if (package is! Map<dynamic, dynamic>)
+    if (package is! Map<dynamic, dynamic>) {
       continue;
+    }
     final packPath = packagePath(package);
-    if (packPath == null)
+    if (packPath == null) {
       continue;
+    }
     licenses += await loadLicense(
       name: name,
       licenseFilePath: path.join(pubCacheDirPath, packPath, 'LICENSE'),
@@ -97,7 +99,8 @@ String gitRepoName(String url) {
 
 Future<String> findProjectRoot({Directory from}) async {
   from = from ?? Directory.current;
-  if (await File(path.join(from.path, 'pubspec.yaml')).exists())
+  if (await File(path.join(from.path, 'pubspec.yaml')).exists()) {
     return from.path;
+  }
   return findProjectRoot(from: from.parent);
 }
