@@ -2,3 +2,7 @@
 .idea/
 .vscode/
 /.packages
+
+# Don't add our own
+lib/
+lib/oss_licenses.dart

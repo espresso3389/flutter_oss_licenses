@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
+final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
 final flutterDir = Platform.environment['FLUTTER_ROOT'];
-final pubCacheDirPath = Platform.environment['PUB_CACHE'];
+final pubCacheDirPath = Platform.environment['PUB_CACHE'] ?? path.join(homeDir, '.pub-cache');
 
 main(List<String> args) async {
   try {
@@ -12,9 +14,10 @@ main(List<String> args) async {
       print('FLUTTER_ROOT is not set.');
       return 1;
     } else if (pubCacheDirPath == null) {
-      print('PUB_CACHE is not set.');
+      print('Could not determine PUB_CACHE directory.');
       return 2;
     }
+
     final projectRoot = args.length >= 2 ? args[1] : await findProjectRoot();
     final outputFilePath = args.length >= 1 ? args[0] : path.join(projectRoot, 'lib', 'oss_licenses.dart');
     final licenses = await generateLicenseFile(projectRoot: projectRoot);
