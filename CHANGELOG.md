@@ -1,3 +1,7 @@
+## 0.4.1
+
+FIXED: Generation process stops if PUB_CACHE is not explicitly defined.
+
 ## 0.3.0
 
 Loosen version restriction on dependency packages because it conflicts with certain well-used packages.
