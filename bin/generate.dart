@@ -4,9 +4,24 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+String guessPubCacheDir() {
+  var pubCache = Platform.environment['PUB_CACHE'];
+  if (pubCache != null && Directory(pubCache).existsSync())
+    return pubCache;
+
+  if (Platform.isWindows) {
+    pubCache = path.join(Platform.environment['APPDATA'], 'Pub', 'Cache');
+    if (pubCache != null && Directory(pubCache).existsSync())
+      return pubCache;
+  }
+
+  final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+  pubCache = path.join(homeDir, '.pub-cache');
+  return pubCache;
+}
+
 final flutterDir = Platform.environment['FLUTTER_ROOT'];
-final pubCacheDirPath = Platform.environment['PUB_CACHE'] ?? path.join(homeDir, '.pub-cache');
+final pubCacheDirPath = guessPubCacheDir();
 
 main(List<String> args) async {
   try {
@@ -16,6 +31,9 @@ main(List<String> args) async {
     } else if (pubCacheDirPath == null) {
       print('Could not determine PUB_CACHE directory.');
       return 2;
+    } else if (args[0] == '--help' || args[0] == '-h') {
+      print('Usage: generate.dart [OUTPUT_FILE_PATH [PROJECT_ROOT]]');
+      return 3;
     }
 
     final projectRoot = args.length >= 2 ? args[1] : await findProjectRoot();
@@ -23,9 +41,9 @@ main(List<String> args) async {
     final licenses = await generateLicenseFile(projectRoot: projectRoot);
     await File(outputFilePath).writeAsString(licenses);
     return 0;
-  } catch (e) {
-    print(e);
-    return 3;
+  } catch (e, s) {
+    print('$e: $s');
+    return 4;
   }
 }
 
