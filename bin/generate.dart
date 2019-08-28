@@ -31,7 +31,7 @@ main(List<String> args) async {
     } else if (pubCacheDirPath == null) {
       print('Could not determine PUB_CACHE directory.');
       return 2;
-    } else if (args.length == 1 && args[0] == '--help' || args[0] == '-h') {
+    } else if (args.length == 1 && (args[0] == '--help' || args[0] == '-h')) {
       print('Usage: generate.dart [OUTPUT_FILE_PATH [PROJECT_ROOT]]');
       return 3;
     }

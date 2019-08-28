@@ -1,3 +1,7 @@
+## 0.5.2
+
+- Minor fix :(
+
 ## 0.5.1
 
 - Minor fix.
