@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Minor fix.
+
 ## 0.5.0
 
 - For Windows, new pub-cache directory is `%APPDATA%\Pub\Cache`.
