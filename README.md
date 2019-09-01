@@ -10,7 +10,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```
 dev_dependencies:
-  flutter_oss_licenses: ^0.6.1
+  flutter_oss_licenses: ^0.6.2
 ```
 
 ## Generate oss_licenses.dart

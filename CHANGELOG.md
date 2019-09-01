@@ -1,3 +1,7 @@
+## 0.6.2
+
+- Minor error fixes.
+
 ## 0.6.1
 
 - Minor error fixes.

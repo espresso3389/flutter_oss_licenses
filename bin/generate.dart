@@ -144,6 +144,10 @@ class Package {
       }
     }
 
+    if (license == null || license == '') {
+      return null;
+    }
+
     dynamic yaml;
     try {
       yaml = loadYaml(await File(path.join(directory.path, 'pubspec.yaml')).readAsString());
@@ -152,9 +156,16 @@ class Package {
       yaml = {};
     }
 
+    if (yaml['description'] == null) {
+      return null;
+    }
+
     String version = yaml['version'];
     if (outerName == 'flutter') {
       version = await File(path.join(flutterDir, 'version')).readAsString();
+    }
+    if (version == null) {
+      return null;
     }
 
     return Package(
