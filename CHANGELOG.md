@@ -1,3 +1,11 @@
+## 0.6.1
+
+- Minor error fixes.
+
+## 0.6.0
+
+- *BREAKING CHANGE*: The output format is completely changed to provide more information about packages.
+
 ## 0.5.2
 
 - Minor fix :(
