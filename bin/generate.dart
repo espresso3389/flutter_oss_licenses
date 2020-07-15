@@ -14,6 +14,9 @@ String guessPubCacheDir() {
     pubCache = path.join(Platform.environment['APPDATA'], 'Pub', 'Cache');
     if (pubCache != null && Directory(pubCache).existsSync())
       return pubCache;
+    pubCache = path.join(Platform.environment['LOCALAPPDATA'], 'Pub', 'Cache');
+    if (pubCache != null && Directory(pubCache).existsSync())
+      return pubCache;
   }
 
   final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];

@@ -6,3 +6,4 @@
 # Don't add our own
 lib/
 lib/oss_licenses.dart
+.dart_tool/package_config.json
