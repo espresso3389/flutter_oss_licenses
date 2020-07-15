@@ -1,3 +1,7 @@
+## 0.6.3
+
+- Recent flutter builds uses LOCALAPPDATA for pub cache on Windows.
+
 ## 0.6.2
 
 - Minor error fixes.
