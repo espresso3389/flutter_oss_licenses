@@ -100,14 +100,14 @@ class OssLicensesPage extends StatelessWidget {
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
               final key = snapshot.data[index];
-              final ossl = ossLicenses[key];
-              final version = ossl['version'];
-              final desc = ossl['description'];
+              final licenseJson = ossLicenses[key];
+              final version = licenseJson['version'];
+              final desc = licenseJson['description'];
               return ListTile(
               title: Text('$key ${version ?? ''}'),
               subtitle: desc != null ? Text(desc) : null,
               trailing: Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MiscOssLicenseSingle(name: key, json: ossl)))
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MiscOssLicenseSingle(name: key, json: licenseJson)))
             );
             },
             separatorBuilder: (context, index) => const Divider()

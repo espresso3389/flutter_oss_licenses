@@ -1,3 +1,7 @@
+## 0.6.5
+
+- Updating settings.
+
 ## 0.6.4
 
 - Updating README.md.
@@ -40,8 +44,8 @@
 
 ## 0.2.0
 
-- Addresses facial things warned by pub.dev's health suggestions.
+- Addresses facial things warned by pub.dev health suggestions.
 
 ## 0.1.0
 
-- First rlease.
+- First release.
