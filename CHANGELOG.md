@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Supports null-safety.
+
 ## 0.6.6
 
 - Updating settings.

@@ -5,20 +5,28 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-String guessPubCacheDir() {
+String? guessPubCacheDir() {
   var pubCache = Platform.environment['PUB_CACHE'];
   if (pubCache != null && Directory(pubCache).existsSync()) return pubCache;
 
   if (Platform.isWindows) {
-    pubCache = path.join(Platform.environment['APPDATA'], 'Pub', 'Cache');
-    if (pubCache != null && Directory(pubCache).existsSync()) return pubCache;
-    pubCache = path.join(Platform.environment['LOCALAPPDATA'], 'Pub', 'Cache');
-    if (pubCache != null && Directory(pubCache).existsSync()) return pubCache;
+    final appData = Platform.environment['APPDATA'];
+    if (appData != null) {
+      pubCache = path.join(appData, 'Pub', 'Cache');
+      if (Directory(pubCache).existsSync()) return pubCache;
+    }
+    final localAppData = Platform.environment['LOCALAPPDATA'];
+    if (localAppData != null) {
+      pubCache = path.join(localAppData, 'Pub', 'Cache');
+      if (Directory(pubCache).existsSync()) return pubCache;
+    }
   }
 
   final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
-  pubCache = path.join(homeDir, '.pub-cache');
-  return pubCache;
+  if (homeDir != null) {
+    return path.join(homeDir, '.pub-cache');
+  }
+  return null;
 }
 
 final flutterDir = Platform.environment['FLUTTER_ROOT'];
@@ -58,13 +66,13 @@ final ossLicenses = <String, dynamic>''' +
   }
 }
 
-Future<Map<String, dynamic>> generateLicenseFile({@required String projectRoot}) async {
+Future<Map<String, dynamic>> generateLicenseFile({required String projectRoot}) async {
   final pubspec = loadYaml(await File(path.join(projectRoot, 'pubspec.lock')).readAsString());
   final packages = pubspec['packages'] as Map;
 
   final json = <String, dynamic>{};
 
-  for (String name in packages.keys) {
+  for (String name in packages.keys as Iterable<String>) {
     final package = await Package.fromMap(name, packages[name]);
     if (package == null || package.name == null) {
       continue;
@@ -85,8 +93,8 @@ Future<Map<String, dynamic>> generateLicenseFile({@required String projectRoot})
   return json;
 }
 
-Future<String> loadLicense({String name, String licenseFilePath, String defaultLicenseText}) async {
-  String license = defaultLicenseText;
+Future<String> loadLicense({String? name, required String licenseFilePath, String? defaultLicenseText}) async {
+  String? license = defaultLicenseText;
   try {
     license = await File(licenseFilePath).readAsString();
   } catch (e) {
@@ -96,17 +104,17 @@ Future<String> loadLicense({String name, String licenseFilePath, String defaultL
 }
 
 class Package {
-  final Directory directory;
-  final Map packageYaml;
-  final String name;
-  final String description;
-  final String homepage;
-  final List<String> authors;
-  final String version;
-  final String license;
-  final bool isMarkdown;
-  final bool isSdk;
-  final bool isDirectDependency;
+  final Directory? directory;
+  final Map? packageYaml;
+  final String? name;
+  final String? description;
+  final String? homepage;
+  final List<String>? authors;
+  final String? version;
+  final String? license;
+  final bool? isMarkdown;
+  final bool? isSdk;
+  final bool? isDirectDependency;
 
   Package(
       {this.directory,
@@ -121,7 +129,7 @@ class Package {
       this.isSdk,
       this.isDirectDependency});
 
-  static Future<Package> fromMap(String outerName, Map packageJson) async {
+  static Future<Package?> fromMap(String outerName, Map packageJson) async {
     Directory directory;
     bool isSdk = false;
     final source = packageJson['source'];
@@ -130,23 +138,23 @@ class Package {
       final host = removePrefix(descs['url']);
       final name = descs['name'];
       final version = packageJson['version'];
-      directory = Directory(path.join(pubCacheDirPath, 'hosted/$host/$name-$version'));
+      directory = Directory(path.join(pubCacheDirPath!, 'hosted/$host/$name-$version'));
     } else if (source == 'git') {
       final repo = gitRepoName(descs['url']);
       final commit = descs['resolved-ref'];
-      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit'));
+      directory = Directory(path.join(pubCacheDirPath!, 'git/$repo-$commit'));
     } else if (source == 'sdk') {
-      directory = Directory(path.join(flutterDir, 'packages', outerName));
+      directory = Directory(path.join(flutterDir!, 'packages', outerName));
       isSdk = true;
     } else {
       return null;
     }
     final isDirectDependency = packageJson['dependency'] == "direct main";
 
-    String license;
+    String? license;
     bool isMarkdown = false;
     if (outerName == 'flutter') {
-      license = await File(path.join(flutterDir, 'LICENSE')).readAsString();
+      license = await File(path.join(flutterDir!, 'LICENSE')).readAsString();
     } else {
       String licensePath = path.join(directory.path, 'LICENSE');
       try {
@@ -175,9 +183,9 @@ class Package {
       return null;
     }
 
-    String version = yaml['version'];
+    String? version = yaml['version'];
     if (outerName == 'flutter') {
-      version = await File(path.join(flutterDir, 'version')).readAsString();
+      version = await File(path.join(flutterDir!, 'version')).readAsString();
     }
     if (version == null) {
       return null;
@@ -209,7 +217,7 @@ String gitRepoName(String url) {
   return name.endsWith('.git') ? name.substring(0, name.length - 4) : name;
 }
 
-Future<String> findProjectRoot({Directory from}) async {
+Future<String> findProjectRoot({Directory? from}) async {
   from = from ?? Directory.current;
   if (await File(path.join(from.path, 'pubspec.yaml')).exists()) {
     return from.path;
