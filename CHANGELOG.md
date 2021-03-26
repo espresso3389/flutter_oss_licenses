@@ -1,3 +1,8 @@
+## 1.0.1
+
+- FIX: Doesn't run on Flutter 2.0 (#2)
+- Better formatting on oss_licenses.dart.
+
 ## 1.0.0
 
 - Supports null-safety.
