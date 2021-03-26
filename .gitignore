@@ -7,3 +7,5 @@
 lib/
 lib/oss_licenses.dart
 .dart_tool/package_config.json
+
+.dart_tool/
