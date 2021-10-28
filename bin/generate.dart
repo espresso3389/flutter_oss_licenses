@@ -82,6 +82,7 @@ Future<Map<String, dynamic>> generateLicenseFile({required String projectRoot}) 
       'name': package.name,
       'description': package.description,
       'homepage': package.homepage,
+      'repository': package.repository,
       'authors': package.authors,
       'version': package.version,
       'license': package.license,
@@ -109,6 +110,7 @@ class Package {
   final String? name;
   final String? description;
   final String? homepage;
+  final String? repository;
   final List<String>? authors;
   final String? version;
   final String? license;
@@ -116,18 +118,20 @@ class Package {
   final bool? isSdk;
   final bool? isDirectDependency;
 
-  Package(
-      {this.directory,
-      this.packageYaml,
-      this.name,
-      this.description,
-      this.homepage,
-      this.authors,
-      this.version,
-      this.license,
-      this.isMarkdown,
-      this.isSdk,
-      this.isDirectDependency});
+  Package({
+    this.directory,
+    this.packageYaml,
+    this.name,
+    this.description,
+    this.homepage,
+    this.repository,
+    this.authors,
+    this.version,
+    this.license,
+    this.isMarkdown,
+    this.isSdk,
+    this.isDirectDependency,
+  });
 
   static Future<Package?> fromMap(String outerName, Map packageJson) async {
     Directory directory;
@@ -197,6 +201,7 @@ class Package {
         name: yaml['name'],
         description: yaml['description'],
         homepage: yaml['homepage'],
+        repository: yaml['repository'],
         authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
         version: version.trim(),
         license: license.trim().replaceAll('\r\n', '\n'),
