@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dart_oss_licenses/dart_oss_licenses.dart' as oss;
+import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
 import 'package:path/path.dart' as path;
 
 main(List<String> args) async {
@@ -20,9 +20,7 @@ main(List<String> args) async {
     }
 
     final projectRoot = args.length >= 2 ? args[1] : await findProjectRoot();
-    final outputFilePath = args.isNotEmpty
-        ? args[0]
-        : path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final outputFilePath = args.isNotEmpty ? args[0] : path.join(projectRoot, 'lib', 'oss_licenses.dart');
     final licenses = await oss.generateLicenseInfo(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
     );

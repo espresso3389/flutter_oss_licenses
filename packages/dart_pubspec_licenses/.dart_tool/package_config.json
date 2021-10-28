@@ -1,0 +1,62 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "charcode",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/charcode-1.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "collection",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/collection-1.15.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "lints",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/lints-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "source_span",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/source_span-1.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "string_scanner",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/string_scanner-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "term_glyph",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/term_glyph-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "yaml",
+      "rootUri": "file:///C:/Users/kawasaki/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/yaml-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "dart_pubspec_licenses",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    }
+  ],
+  "generated": "2021-10-28T19:02:54.212760Z",
+  "generator": "pub",
+  "generatorVersion": "2.15.0-248.0.dev"
+}
