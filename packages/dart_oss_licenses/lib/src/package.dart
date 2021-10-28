@@ -9,6 +9,7 @@ class Package {
   final String? name;
   final String? description;
   final String? homepage;
+  final String? repository;
   final List<String>? authors;
   final String? version;
   final String? license;
@@ -22,6 +23,7 @@ class Package {
     this.name,
     this.description,
     this.homepage,
+    this.repository,
     this.authors,
     this.version,
     this.license,
@@ -44,8 +46,7 @@ class Package {
       final host = removePrefix(description['url']);
       final name = description['name'];
       final version = packageJson['version'];
-      directory =
-          Directory(path.join(pubCacheDirPath, 'hosted/$host/$name-$version'));
+      directory = Directory(path.join(pubCacheDirPath, 'hosted/$host/$name-$version'));
     } else if (source == 'git') {
       final repo = gitRepoName(description['url']);
       final commit = description['resolved-ref'];
@@ -80,8 +81,7 @@ class Package {
 
     dynamic yaml;
     try {
-      yaml = loadYaml(
-          await File(path.join(directory.path, 'pubspec.yaml')).readAsString());
+      yaml = loadYaml(await File(path.join(directory.path, 'pubspec.yaml')).readAsString());
     } catch (e) {
       // yaml may not be there
       yaml = {};
@@ -105,8 +105,8 @@ class Package {
         name: yaml['name'],
         description: yaml['description'],
         homepage: yaml['homepage'],
-        authors: yaml['authors']?.cast<String>()?.toList() ??
-            (yaml['author'] != null ? [yaml['author']] : []),
+        repository: yaml['repository'],
+        authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
         version: version.trim(),
         license: license.trim().replaceAll('\r\n', '\n'),
         isMarkdown: isMarkdown,

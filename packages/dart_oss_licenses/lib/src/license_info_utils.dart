@@ -32,8 +32,7 @@ String? guessPubCacheDir() {
   return null;
 }
 
-Future<Map<String, dynamic>> generateLicenseInfo(
-    {required String pubspecLockPath}) async {
+Future<Map<String, dynamic>> generateLicenseInfo({required String pubspecLockPath}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
@@ -63,6 +62,7 @@ Future<Map<String, dynamic>> generateLicenseInfo(
       'name': package.name,
       'description': package.description,
       'homepage': package.homepage,
+      'repository': package.repository,
       'authors': package.authors,
       'version': package.version,
       'license': package.license,
