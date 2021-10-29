@@ -1,3 +1,7 @@
+## 1.1.1
+
+- FIXED: command name should be bin/generate.dart
+
 ## 1.1.0
 
 - It now depends on a new module named [dart_pubspec_licenses](https://pub.dev/packages/dart_pubspec_licenses); based on PR #6 by [dustin-graham](https://github.com/dustin-graham).
