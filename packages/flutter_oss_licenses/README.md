@@ -1,6 +1,6 @@
 ## Introduction
 
-[flutter_oss_licenses](https://pub.dev/packages/flutter_oss_licenses) is a tool for generating detail and better OSS license list using `pubspec.lock`.
+[flutter_oss_licenses](https://pub.dev/packages/flutter_oss_licenses) is a tool to generate detail and better OSS license list using `pubspec.yaml/lock` files.
 
 ## Installing
 
