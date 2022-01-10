@@ -15,6 +15,7 @@ dependencies:
   meta: ^1.7.0
   yaml: ^3.1.0
   dart_pubspec_licenses: ^1.0.1
+  args: ^2.3.0
 
 dev_dependencies:
   flutter_lints: ^1.0.4
