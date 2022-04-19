@@ -5,7 +5,7 @@
 ## Installation
 ```yaml
 dependencies:
-  dart_pubspec_licenses: ^1.0.1
+  dart_pubspec_licenses: ^1.0.2
 ```
 
 ## Usage
