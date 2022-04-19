@@ -1,3 +1,8 @@
+## 1.1.2
+
+- dart_pubspec_licenses 1.0.2 for [#7](https://github.com/espresso3389/flutter_oss_licenses/issues/7)
+- Update command line module to support `-json` option (#8)
+
 ## 1.1.1
 
 - FIXED: command name should be bin/generate.dart

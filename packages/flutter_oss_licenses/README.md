@@ -8,7 +8,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```
 dev_dependencies:
-  flutter_oss_licenses: ^1.1.1
+  flutter_oss_licenses: ^1.1.2
 ```
 
 ## Generate oss_licenses.dart
@@ -24,6 +24,15 @@ And then, the following command generates `oss_licenses.dart` on the project's `
 ```shell
 $ flutter pub run flutter_oss_licenses:generate.dart
 ```
+
+### Additional options
+
+Option | Abbr. | Description
+-------|-------|--------------
+`--output OUTPUT_FILE_PATH` | `-o` | Specify output file path. If the file extension is .json, --json option is implied anyway. The default output file path depends on the `--json` flag:<br>with `--json`: `PROJECT_ROOT/assets/oss_licenses.json`<br>without `--json`: `PROJECT_ROOT/lib/oss_licenses.dart`
+`--project-root PROJECT_ROOT` | `-p` | Explicitly specify project root directory that contains `pubspec.lock`.
+`--json` | `-j` | Generate JSON file rather than dart file.
+`--help` | `-h` | Show the help.
 
 ## The file structure
 
