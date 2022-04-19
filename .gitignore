@@ -1,2 +1,4 @@
+.dart_tool
+.packages
+build/
 
-packages/dart_pubspec_licenses/.packages
