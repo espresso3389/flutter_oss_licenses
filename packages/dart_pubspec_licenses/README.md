@@ -1,6 +1,6 @@
 ## Introduction
 
-[dart_pubspec_licenses](https://pub.dev/packages/flutter_oss_licenses) is a package that helps gather and assemble OSS license info using `pubspec.lock`.
+[dart_pubspec_licenses](https://pub.dev/packages/dart_pubspec_licenses) is a package that helps gather and assemble OSS license info using `pubspec.lock`.
 
 ## Installation
 ```yaml
@@ -9,16 +9,8 @@ dependencies:
 ```
 
 ## Usage
-```dart
-import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
 
-void main() async {
-  final pubspecLockPath = "path/to/pubspec.lock";
-  final info = await oss.generateLicenseInfo(
-      pubspecLockPath: project.pubspecLockPath);
-  print(info);
-}
-```
+See [the example](https://pub.dev/packages/dart_pubspec_licenses/example).
 
 ## Reporting issues
 
