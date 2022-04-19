@@ -37,6 +37,7 @@ class Package {
     required Map packageJson,
     required String pubCacheDirPath,
     required String flutterDir,
+    required String pubspecLockPath,
   }) async {
     Directory directory;
     bool isSdk = false;
@@ -50,9 +51,12 @@ class Package {
     } else if (source == 'git') {
       final repo = gitRepoName(description['url']);
       final commit = description['resolved-ref'];
-      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit'));
+      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', description['path']));
     } else if (source == 'sdk') {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
+      isSdk = true;
+    } else if (source == 'path') {
+      directory = Directory(path.absolute(path.dirname(pubspecLockPath), description['path']));
       isSdk = true;
     } else {
       return null;

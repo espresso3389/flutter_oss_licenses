@@ -52,6 +52,7 @@ Future<Map<String, dynamic>> generateLicenseInfo({required String pubspecLockPat
       packageJson: packages[node],
       pubCacheDirPath: pubCacheDir,
       flutterDir: flutterDir!,
+      pubspecLockPath: pubspecLockPath,
     );
 
     if (package == null || package.name == null) {

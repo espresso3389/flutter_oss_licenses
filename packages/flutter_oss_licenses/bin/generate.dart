@@ -29,6 +29,7 @@ main(List<String> args) async {
 
     final projectRoot = results['project-root'] ?? await findProjectRoot();
     final outputFilePath = results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
     final licenses = await oss.generateLicenseInfo(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
     );
@@ -43,7 +44,7 @@ final ossLicenses = <String, dynamic>''' +
         jsonCode +
         ';';
 
-    await File(outputFilePath).writeAsString(results['json'] ? jsonCode : dartCode);
+    await File(outputFilePath).writeAsString(generateJson ? jsonCode : dartCode);
     return 0;
   } catch (e, s) {
     print('$e: $s');
@@ -63,7 +64,7 @@ ArgParser getArgParser() {
   final parser = ArgParser();
 
   parser.addOption('output', abbr: 'o', defaultsTo: null, help: '''
-Specify output file path.
+Specify output file path. If the file extension is .json, --json option is implied anyway.
 The default output file path depends on the --json flag:
   with    --json: PROJECT_ROOT/assets/oss_licenses.json
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
