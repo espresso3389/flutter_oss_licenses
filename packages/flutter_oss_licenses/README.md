@@ -2,11 +2,13 @@
 
 [flutter_oss_licenses](https://pub.dev/packages/flutter_oss_licenses) is a tool to generate detail and better OSS license list using `pubspec.yaml/lock` files.
 
+Unlike the package name, it still runs with pure Dart environment :)
+
 ## Installing
 
 Adding the package name to `dev_dependencies`; not to `dependencies` because the package does nothing on runtime.
 
-```
+```yaml
 dev_dependencies:
   flutter_oss_licenses: ^1.1.3
 ```
@@ -16,23 +18,14 @@ dev_dependencies:
 Before executing the command, you must update your `pubspec.lock` using `pub get` (or `pub upgrade` if you want).
 
 ```shell
-$ flutter pub get
+flutter pub get
 ```
 
 And then, the following command generates `oss_licenses.dart` on the project's `lib/` directory:
 
 ```shell
-$ flutter pub run flutter_oss_licenses:generate.dart
+flutter pub run flutter_oss_licenses:generate.dart
 ```
-
-### Additional options
-
-Option | Abbr. | Description
--------|-------|--------------
-`--output OUTPUT_FILE_PATH` | `-o` | Specify output file path. If the file extension is .json, --json option is implied anyway. The default output file path depends on the `--json` flag:<br>with `--json`: `PROJECT_ROOT/assets/oss_licenses.json`<br>without `--json`: `PROJECT_ROOT/lib/oss_licenses.dart`
-`--project-root PROJECT_ROOT` | `-p` | Explicitly specify project root directory that contains `pubspec.lock`.
-`--json` | `-j` | Generate JSON file rather than dart file.
-`--help` | `-h` | Show the help.
 
 ## The file structure
 
@@ -61,7 +54,7 @@ And, you can use the map on your project code in your way. The package does not 
 
 ## Flutter usage sample
 
-Based on the generated `oss_licenses.dart` file, you can create your own license page like the following one:
+Using on the generated `oss_licenses.dart` file, you can create your own license page like the following one:
 
 ```dart
 import 'package:flutter/foundation.dart';
@@ -186,15 +179,29 @@ class MiscOssLicenseSingle extends StatelessWidget {
 
 ## Command line options
 
-Either running `generate.dart` using `pub run` or directly, it accepts two or less options. 
-The first option is output dart file name. The default is `lib/oss_licenses.dart`.
-And the another is project root, which is by default detected automatically.
+The following command line generates JSON file instead of dart file:
 
 ```shell
-$ generate.dart [OUTPUT_FILENAME [PROJECT_ROOT]]
+flutter pub run flutter_oss_licenses:generate.dart -o licenses.json --json
 ```
 
-The `bin/generated.dart` uses two environment variables; one is `FLUTTER_ROOT` and `PUB_CACHE`. They are normally set by `flutter pub run` but if you directly execute the script, you must set them manually.
+The following table lists the acceptable options:
+
+Option | Abbr. | Description
+-------|-------|--------------
+`--output OUTPUT_FILE_PATH` | `-o` | Specify output file path. If the file extension is .json, --json option is implied anyway. The default output file path depends on the `--json` flag:<br>with `--json`: `PROJECT_ROOT/assets/oss_licenses.json`<br>without `--json`: `PROJECT_ROOT/lib/oss_licenses.dart`
+`--project-root PROJECT_ROOT` | `-p` | Explicitly specify project root directory that contains `pubspec.lock`.
+`--json` | `-j` | Generate JSON file rather than dart file.
+`--help` | `-h` | Show the help.
+
+### Environment variables
+
+The `bin/generated.dart` uses one or two environment variable(s) depending on your use case:
+
+-  `PUB_CACHE` is used to determine package directory.
+- `FLUTTER_ROOT` is for Flutter projects only. If not set, Flutter SDK dependencies are simply ignored and not listed.
+
+They are normally set by `dart run` or `flutter pub run`.
 
 ## Reporting issues
 
