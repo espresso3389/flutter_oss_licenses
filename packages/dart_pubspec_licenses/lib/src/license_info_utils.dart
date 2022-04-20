@@ -51,6 +51,7 @@ Future<List<Package>> generateLicenseInfo(
         packageJson: packages[node],
         pubCacheDirPath: pubCacheDir,
         flutterDir: flutterDir,
+        pubspecLockPath: pubspecLockPath,
       ),
     ),
   );
