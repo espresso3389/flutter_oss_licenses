@@ -36,7 +36,7 @@ class Package {
     required String outerName,
     required Map packageJson,
     required String pubCacheDirPath,
-    required String flutterDir,
+    required String? flutterDir,
     required String pubspecLockPath,
   }) async {
     Directory directory;
@@ -52,7 +52,7 @@ class Package {
       final repo = gitRepoName(description['url']);
       final commit = description['resolved-ref'];
       directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', description['path']));
-    } else if (source == 'sdk') {
+    } else if (source == 'sdk' && flutterDir != null) {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
       isSdk = true;
     } else if (source == 'path') {
@@ -65,7 +65,7 @@ class Package {
 
     String? license;
     bool isMarkdown = false;
-    if (outerName == 'flutter') {
+    if (outerName == 'flutter' && flutterDir != null) {
       license = await File(path.join(flutterDir, 'LICENSE')).readAsString();
     } else {
       String licensePath = path.join(directory.path, 'LICENSE');
@@ -96,7 +96,7 @@ class Package {
     }
 
     String? version = yaml['version'];
-    if (outerName == 'flutter') {
+    if (outerName == 'flutter' && flutterDir != null) {
       version = await File(path.join(flutterDir, 'version')).readAsString();
     }
     if (version == null) {

@@ -37,9 +37,6 @@ Future<Map<String, dynamic>> generateLicenseInfo({required String pubspecLockPat
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
   }
-  if (flutterDir == null) {
-    throw "flutter root not found";
-  }
   final pubspecLock = await File(pubspecLockPath).readAsString();
   final pubspec = loadYaml(pubspecLock);
   final packages = pubspec['packages'] as Map;
@@ -51,7 +48,7 @@ Future<Map<String, dynamic>> generateLicenseInfo({required String pubspecLockPat
       outerName: node,
       packageJson: packages[node],
       pubCacheDirPath: pubCacheDir,
-      flutterDir: flutterDir!,
+      flutterDir: flutterDir,
       pubspecLockPath: pubspecLockPath,
     );
 
