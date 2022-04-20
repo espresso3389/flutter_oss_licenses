@@ -1,3 +1,7 @@
+## 1.1.3
+
+- dart_pubspec_licenses 1.0.3
+
 ## 1.1.2
 
 - dart_pubspec_licenses 1.0.2 for [#7](https://github.com/espresso3389/flutter_oss_licenses/issues/7)
