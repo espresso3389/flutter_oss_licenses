@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
 import 'package:path/path.dart' as path;
-import 'package:args/args.dart';
 
 main(List<String> args) async {
   final parser = getArgParser();
@@ -27,12 +28,19 @@ main(List<String> args) async {
     }
 
     final projectRoot = results['project-root'] ?? await findProjectRoot();
-    final outputFilePath = results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
-    final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
+    final outputFilePath =
+        results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final generateJson = results['json'] ||
+        path.extension(outputFilePath).toLowerCase() == '.json';
     final licenses = await oss.generateLicenseInfo(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
     );
-    final licensesCode = licenses.map((license) => '''
+
+    final String output;
+    if (generateJson) {
+      output = const JsonEncoder.withIndent("  ").convert(licenses);
+    } else {
+      final licensesCode = licenses.map((license) => '''
   Package(
     name: '${license.name}',
     description: \'\'\'${license.description}\'\'\',
@@ -47,8 +55,8 @@ main(List<String> args) async {
   )
     ''').toList(growable: false);
 
-    final jsonCode = const JsonEncoder.withIndent("  ").convert(licenses);
-    final dartCode = '''// cSpell:disable
+      output = '''
+// cSpell:disable
 // ignore_for_file: prefer_single_quotes
 
 import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart';
@@ -58,8 +66,9 @@ import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart';
 const ossLicenses = <Package>
 $licensesCode;
 ''';
+    }
 
-    await File(outputFilePath).writeAsString(generateJson ? jsonCode : dartCode);
+    await File(outputFilePath).writeAsString(output);
     return 0;
   } catch (e, s) {
     print('$e: $s');
@@ -85,10 +94,17 @@ The default output file path depends on the --json flag:
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
 ''');
   parser.addOption('project-root',
-      abbr: '-p', defaultsTo: null, help: 'Explicitly specify project root directory that contains pubspec.lock.');
+      abbr: '-p',
+      defaultsTo: null,
+      help:
+          'Explicitly specify project root directory that contains pubspec.lock.');
   parser.addFlag('json',
-      abbr: 'j', defaultsTo: false, negatable: false, help: 'Generate JSON file rather than dart file.');
-  parser.addFlag('help', abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
+      abbr: 'j',
+      defaultsTo: false,
+      negatable: false,
+      help: 'Generate JSON file rather than dart file.');
+  parser.addFlag('help',
+      abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
 
   return parser;
 }
