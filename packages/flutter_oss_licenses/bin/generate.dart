@@ -70,7 +70,7 @@ The default output file path depends on the --json flag:
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
 ''');
   parser.addOption('project-root',
-      abbr: '-p', defaultsTo: null, help: 'Explicitly specify project root directory that contains pubspec.lock.');
+      abbr: 'p', help: 'Explicitly specify project root directory that contains pubspec.lock.');
   parser.addFlag('json',
       abbr: 'j', defaultsTo: false, negatable: false, help: 'Generate JSON file rather than dart file.');
   parser.addFlag('help', abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');

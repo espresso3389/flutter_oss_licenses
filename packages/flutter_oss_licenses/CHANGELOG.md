@@ -1,3 +1,7 @@
+## 1.1.4
+
+- Minor fix.
+
 ## 1.1.3
 
 - dart_pubspec_licenses 1.0.3
