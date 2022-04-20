@@ -6,10 +6,10 @@
 ///
 /// Takes a path to the Dart project as an argument.  If no argument is
 /// specified, uses the current working directory.
-
 import 'dart:io' as io;
-import 'package:path/path.dart' as path;
+
 import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
+import 'package:path/path.dart' as path;
 
 void main(List<String> args) async {
   final projectRoot = args.isEmpty ? '.' : args.first;
@@ -23,8 +23,8 @@ void main(List<String> args) async {
   final info = await oss.generateLicenseInfo(pubspecLockPath: pubspecLockPath);
 
   var firstIteration = true;
-  for (var entry in info.entries) {
-    if (!(entry.value['isDirectDependency'] ?? false)) {
+  for (var entry in info) {
+    if (!(entry.isDirectDependency ?? false)) {
       continue;
     }
 
@@ -33,9 +33,9 @@ void main(List<String> args) async {
     }
 
     print(
-      '${entry.key}:\n'
+      '${entry.name}:\n'
       '\n'
-      '${entry.value['license']}\n',
+      '${entry.license}\n',
     );
     firstIteration = false;
   }

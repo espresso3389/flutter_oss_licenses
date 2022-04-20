@@ -6,7 +6,7 @@
 
 ```yaml
 dependencies:
-  dart_pubspec_licenses: ^1.0.3
+  dart_pubspec_licenses: ^2.0.0
 ```
 
 ## Usage
