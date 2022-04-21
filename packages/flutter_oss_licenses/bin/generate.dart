@@ -89,37 +89,37 @@ ${sb.toString()}
 /// Package license definition.
 class Package {
   /// Package name
-  final String? name;
+  final String name;
   /// Description
-  final String? description;
+  final String description;
   /// Website URL
   final String? homepage;
   /// Repository URL
   final String? repository;
   /// Authors
-  final List<String>? authors;
+  final List<String> authors;
   /// Version
-  final String? version;
+  final String version;
   /// License
   final String? license;
   /// Whether the license is in markdown format or not (plain text).
-  final bool? isMarkdown;
+  final bool isMarkdown;
   /// Whether the package is included in the SDK or not.
-  final bool? isSdk;
+  final bool isSdk;
   /// Whether the package is direct dependency or not.
-  final bool? isDirectDependency;
+  final bool isDirectDependency;
 
   const Package({
-    this.name,
-    this.description,
+    required this.name,
+    required this.description,
     this.homepage,
     this.repository,
-    this.authors,
-    this.version,
+    required this.authors,
+    required this.version,
     this.license,
-    this.isMarkdown,
-    this.isSdk,
-    this.isDirectDependency,
+    required this.isMarkdown,
+    required this.isSdk,
+    required this.isDirectDependency,
   });
 }
 ''';

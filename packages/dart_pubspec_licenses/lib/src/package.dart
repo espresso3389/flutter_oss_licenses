@@ -6,30 +6,30 @@ import 'package:yaml/yaml.dart';
 class Package {
   final Directory? directory;
   final Map? packageYaml;
-  final String? name;
-  final String? description;
+  final String name;
+  final String description;
   final String? homepage;
   final String? repository;
-  final List<String>? authors;
-  final String? version;
+  final List<String> authors;
+  final String version;
   final String? license;
-  final bool? isMarkdown;
-  final bool? isSdk;
-  final bool? isDirectDependency;
+  final bool isMarkdown;
+  final bool isSdk;
+  final bool isDirectDependency;
 
   const Package({
     this.directory,
     this.packageYaml,
-    this.name,
-    this.description,
+    required this.name,
+    required this.description,
     this.homepage,
     this.repository,
-    this.authors,
-    this.version,
+    required this.authors,
+    required this.version,
     this.license,
-    this.isMarkdown,
-    this.isSdk,
-    this.isDirectDependency,
+    required this.isMarkdown,
+    required this.isSdk,
+    required this.isDirectDependency,
   });
 
   static Future<Package?> fromMap({
@@ -42,21 +42,21 @@ class Package {
     Directory directory;
     bool isSdk = false;
     final source = packageJson['source'];
-    final description = packageJson['description'];
+    final desc = packageJson['description'];
     if (source == 'hosted') {
-      final host = removePrefix(description['url']);
-      final name = description['name'];
+      final host = removePrefix(desc['url']);
+      final name = desc['name'];
       final version = packageJson['version'];
       directory = Directory(path.join(pubCacheDirPath, 'hosted/$host/$name-$version'));
     } else if (source == 'git') {
-      final repo = gitRepoName(description['url']);
-      final commit = description['resolved-ref'];
-      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', description['path']));
+      final repo = gitRepoName(desc['url']);
+      final commit = desc['resolved-ref'];
+      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', desc['path']));
     } else if (source == 'sdk' && flutterDir != null) {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
       isSdk = true;
     } else if (source == 'path') {
-      directory = Directory(path.absolute(path.dirname(pubspecLockPath), description['path']));
+      directory = Directory(path.absolute(path.dirname(pubspecLockPath), desc['path']));
       isSdk = true;
     } else {
       return null;
@@ -79,8 +79,8 @@ class Package {
       }
     }
 
-    if (license == null || license == '') {
-      license = "no license found";
+    if (license == '') {
+      license = null;
     }
 
     dynamic yaml;
@@ -91,28 +91,29 @@ class Package {
       yaml = {};
     }
 
-    if (yaml['description'] == null) {
+    final name = yaml['name'];
+    final description = yaml['description'];
+    if (name is! String || description is! String) {
       return null;
     }
 
-    String? version = yaml['version'];
-    if (outerName == 'flutter' && flutterDir != null) {
-      version = await File(path.join(flutterDir, 'version')).readAsString();
-    }
-    if (version == null) {
+    final version = outerName == 'flutter' && flutterDir != null
+        ? await File(path.join(flutterDir, 'version')).readAsString()
+        : yaml['version'];
+    if (version is! String) {
       return null;
     }
 
     return Package(
         directory: directory,
         packageYaml: yaml,
-        name: yaml['name'],
-        description: yaml['description'],
+        name: name,
+        description: description,
         homepage: yaml['homepage'],
         repository: yaml['repository'],
         authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
         version: version.trim(),
-        license: license.trim().replaceAll('\r\n', '\n'),
+        license: license?.trim().replaceAll('\r\n', '\n'),
         isMarkdown: isMarkdown,
         isSdk: isSdk,
         isDirectDependency: isDirectDependency);

@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Minor null-safety updates.
+
 ## 2.0.0
 
 * Sync to flutter_oss_licenses' version up.
