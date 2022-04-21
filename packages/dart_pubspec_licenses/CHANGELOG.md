@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Sync to flutter_oss_licenses' version up.
+
 ## 1.0.3
 
 * Make the `FLUTTER_ROOT` environment variable optional.

@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Introduces Package class to make the package more modern (#9)
+
 ## 1.1.4
 
 - Minor fix.

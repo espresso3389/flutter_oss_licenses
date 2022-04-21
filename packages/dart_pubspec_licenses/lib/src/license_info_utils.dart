@@ -2,7 +2,6 @@ library dart_oss_licenses;
 
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -26,16 +25,14 @@ String? guessPubCacheDir() {
     }
   }
 
-  final homeDir =
-      Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+  final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
   if (homeDir != null) {
     return path.join(homeDir, '.pub-cache');
   }
   return null;
 }
 
-Future<List<Package>> generateLicenseInfo(
-    {required String pubspecLockPath}) async {
+Future<List<Package>> generateLicenseInfo({required String pubspecLockPath}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
@@ -55,5 +52,5 @@ Future<List<Package>> generateLicenseInfo(
       ),
     ),
   );
-  return loadedPackages.whereNotNull().toList(growable: true);
+  return loadedPackages.where((p) => p != null).cast<Package>().toList();
 }
