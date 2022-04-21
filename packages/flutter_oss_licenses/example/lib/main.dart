@@ -27,15 +27,11 @@ class MyApp extends StatelessWidget {
 class OssLicensesPage extends StatelessWidget {
   static Future<List<Package>> loadLicenses() async {
     // merging non-dart dependency list using LicenseRegistry.
-    final ossKeys = Set.of(ossLicenses.map((l) => l.name));
     final lm = <String, List<String>>{};
     await for (var l in LicenseRegistry.licenses) {
       for (var p in l.packages) {
-        if (!ossKeys.contains(p)) {
-          final lp = lm.putIfAbsent(p, () => []);
-          lp.addAll(l.paragraphs.map((p) => p.text));
-          ossKeys.add(p);
-        }
+        final lp = lm.putIfAbsent(p, () => []);
+        lp.addAll(l.paragraphs.map((p) => p.text));
       }
     }
     final licenses = ossLicenses.toList();
@@ -45,7 +41,7 @@ class OssLicensesPage extends StatelessWidget {
         description: '',
         authors: [],
         version: '',
-        license: lm[key]!.join('\n'),
+        license: lm[key]!.join('\n\n'),
         isMarkdown: false,
         isSdk: false,
         isDirectDependency: false,

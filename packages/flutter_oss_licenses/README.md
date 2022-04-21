@@ -12,7 +12,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```yaml
 dev_dependencies:
-  flutter_oss_licenses: ^2.0.0
+  flutter_oss_licenses: ^2.0.0+1
 ```
 
 ## Generate oss_licenses.dart
@@ -40,7 +40,7 @@ const ossLicenses = <Package>[
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '2.0.0',
+    version: '2.0.1',
     license: '''MIT License
 Copyright (c) 2019 Takashi Kawasaki
 Permission is hereby granted, free of charge, to any person obtaining a copy
