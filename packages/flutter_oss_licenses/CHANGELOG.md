@@ -1,3 +1,7 @@
+## 2.0.1
+
+- dart_pubspec_licenses 2.0.2
+
 ## 2.0.0+1
 
 - Update example code.
