@@ -36,7 +36,7 @@ main(List<String> args) async {
 
     final String output;
     if (generateJson) {
-      output = const JsonEncoder.withIndent('  ').convert(licenses);
+      output = const JsonEncoder.withIndent('  ').convert(licenses.map((e) => e.toJson()).toList());
     } else {
       final sb = StringBuffer();
       String escape(String s) => s.replaceAll('\'', '\\\'').replaceAll('\$', '\\\$');

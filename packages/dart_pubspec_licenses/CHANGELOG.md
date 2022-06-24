@@ -1,3 +1,8 @@
+## 2.0.2
+
+* Handle platform separators, handle slashes in the url of hosted dependencies
+* Add toJson conversion to a package
+
 ## 2.0.1
 
 * Minor null-safety updates.

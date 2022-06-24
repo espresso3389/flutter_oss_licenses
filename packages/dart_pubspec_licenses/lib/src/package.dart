@@ -1,10 +1,16 @@
 import 'dart:io';
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
+part 'package.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Package {
+  @JsonKey(ignore: true)
   final Directory? directory;
+  @JsonKey(ignore: true)
   final Map? packageYaml;
   final String name;
   final String description;
@@ -32,6 +38,10 @@ class Package {
     required this.isDirectDependency,
   });
 
+  factory Package.fromJson(Map<String, dynamic> json) => _$PackageFromJson(json);
+  Map<String, dynamic> toJson() => _$PackageToJson(this);
+
+
   static Future<Package?> fromMap({
     required String outerName,
     required Map packageJson,
@@ -47,7 +57,7 @@ class Package {
       final host = removePrefix(desc['url']);
       final name = desc['name'];
       final version = packageJson['version'];
-      directory = Directory(path.join(pubCacheDirPath, 'hosted/$host/$name-$version'));
+      directory = Directory(path.join(pubCacheDirPath, 'hosted', host.replaceAll('/', '%47'), '$name-$version'));
     } else if (source == 'git') {
       final repo = gitRepoName(desc['url']);
       final commit = desc['resolved-ref'];
