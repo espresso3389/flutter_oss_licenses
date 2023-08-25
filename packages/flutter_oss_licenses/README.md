@@ -26,7 +26,7 @@ flutter pub get
 And then, the following command generates `oss_licenses.dart` on the project's `lib/` directory:
 
 ```shell
-flutter pub run flutter_oss_licenses:generate.dart
+dart run flutter_oss_licenses:generate
 ```
 
 The following fragment is just a part of generated `lib/oss_licenses.dart`:
@@ -75,7 +75,7 @@ For a full generated sample, see example code's [oss_licenses.dart](https://gith
 The following command line generates JSON file instead of dart file:
 
 ```shell
-flutter pub run flutter_oss_licenses:generate.dart -o licenses.json --json
+dart run flutter_oss_licenses:generate -o licenses.json --json
 ```
 
 The following table lists the acceptable options:
@@ -89,12 +89,12 @@ Option | Abbr. | Description
 
 ### Environment variables
 
-The `bin/generated.dart` uses one or two environment variable(s) depending on your use case:
+The `bin/generate.dart` uses one or two environment variable(s) depending on your use case:
 
--  `PUB_CACHE` is used to determine package directory.
+- `PUB_CACHE` is used to determine package directory.
 - `FLUTTER_ROOT` is for Flutter projects only. If not set, Flutter SDK dependencies are simply ignored and not listed.
 
-They are normally set by `dart run` or `flutter pub run`.
+They are normally set by `dart run`.
 
 ## Reporting issues
 
