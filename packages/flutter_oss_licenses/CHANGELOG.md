@@ -1,3 +1,7 @@
+## 2.0.3
+
+- Downgrade meta to 1.11.0
+
 ## 2.0.2
 
 - Internal generation logic update
