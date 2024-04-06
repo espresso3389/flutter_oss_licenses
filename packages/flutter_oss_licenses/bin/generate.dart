@@ -46,8 +46,8 @@ main(List<String> args) async {
         if (!s.contains('\n')) {
           return quote + s.replaceAll(quote, "\\$quote").replaceAll('\$', '\\\$') + quote;
         }
-        final q3 = quote + quote + quote;
-        return q3 + s.replaceAll(q3, '\\$quote\\$quote\\$quote') + q3;
+        final q3 = quote * 3;
+        return q3 + s.replaceAll(q3, '\\$quote' * 3) + q3;
       }
 
       void writeIfNotNull(String name, dynamic obj) {
