@@ -1,11 +1,11 @@
 name: flutter_oss_licenses
 description: A tool to generate detail and better OSS license list using pubspec.yaml/lock files.
-version: 2.0.1
+version: 2.0.2
 homepage: https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/flutter_oss_licenses
 repository: https://github.com/espresso3389/flutter_oss_licenses
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
 
 executables:
   generate:

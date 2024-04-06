@@ -1,3 +1,8 @@
+## 2.0.2
+
+- Internal generation logic update
+- Dependency updates
+
 ## 2.0.1
 
 - dart_pubspec_licenses 2.0.2
@@ -62,7 +67,7 @@
 
 ## 0.6.0
 
-- *BREAKING CHANGE*: The output format is completely changed to provide more information about packages.
+- _BREAKING CHANGE_: The output format is completely changed to provide more information about packages.
 
 ## 0.5.2
 
