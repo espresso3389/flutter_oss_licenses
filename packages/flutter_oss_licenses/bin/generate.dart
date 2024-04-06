@@ -16,13 +16,13 @@ main(List<String> args) async {
       printUsage(parser);
       return 0;
     } else if (oss.flutterDir == null) {
-      print('FLUTTER_ROOT is not set.');
+      stdout.writeln('FLUTTER_ROOT is not set.');
       return 1;
     } else if (pubCacheDirPath == null) {
-      print('Could not determine PUB_CACHE directory.');
+      stdout.writeln('Could not determine PUB_CACHE directory.');
       return 2;
-    } else if (results.rest.length > 0) {
-      print('WARNING: extra parameter given\n');
+    } else if (results.rest.isNotEmpty) {
+      stdout.writeln('WARNING: extra parameter given');
       printUsage(parser);
       return 3;
     }
@@ -39,14 +39,24 @@ main(List<String> args) async {
       output = const JsonEncoder.withIndent('  ').convert(licenses.map((e) => e.toJson()).toList());
     } else {
       final sb = StringBuffer();
-      String escape(String s) => s.replaceAll('\'', '\\\'').replaceAll('\$', '\\\$');
+      String toQuotedString(String s) {
+        final quoteCount = "'".allMatches(s).length;
+        final doubleQuoteCount = '"'.allMatches(s).length;
+        final quote = quoteCount > doubleQuoteCount ? '"' : "'";
+        if (!s.contains('\n')) {
+          return quote + s.replaceAll(quote, "\\$quote").replaceAll('\$', '\\\$') + quote;
+        }
+        final q3 = quote + quote + quote;
+        return q3 + s.replaceAll(q3, '\\$quote\\$quote\\$quote') + q3;
+      }
+
       void writeIfNotNull(String name, dynamic obj) {
         if (obj == null) return;
         if (obj is List) {
           sb.write('    $name: [');
           for (int i = 0; i < obj.length; i++) {
             if (i > 0) sb.write(', ');
-            sb.write('\'${escape(obj[i])}\'');
+            sb.write(toQuotedString(obj[i]));
           }
           sb.writeln('],');
           return;
@@ -55,12 +65,11 @@ main(List<String> args) async {
           sb.writeln('    $name: $obj,');
           return;
         }
-        obj = escape(obj);
         if (obj.contains('\n')) {
-          sb.writeln('    $name: \'\'\'$obj\'\'\',');
+          sb.writeln("    $name: ${toQuotedString(obj)},");
           return;
         }
-        sb.writeln('    $name: \'$obj\',');
+        sb.writeln('    $name: ${toQuotedString(obj)},');
       }
 
       for (final l in licenses) {
@@ -160,6 +169,6 @@ The default output file path depends on the --json flag:
 }
 
 void printUsage(ArgParser parser) {
-  print('Usage: ${path.basename(Platform.script.toString())} [OPTION]\n');
-  print(parser.usage);
+  stdout.writeln('Usage: ${path.basename(Platform.script.toString())} [OPTION]');
+  stdout.writeln(parser.usage);
 }

@@ -8,9 +8,9 @@ part 'package.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Package {
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final Directory? directory;
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final Map? packageYaml;
   final String name;
   final String description;
@@ -40,7 +40,6 @@ class Package {
 
   factory Package.fromJson(Map<String, dynamic> json) => _$PackageFromJson(json);
   Map<String, dynamic> toJson() => _$PackageToJson(this);
-
 
   static Future<Package?> fromMap({
     required String outerName,
@@ -82,8 +81,8 @@ class Package {
       try {
         license = await File(licensePath).readAsString();
       } catch (e) {
-        if (await File(licensePath + '.md').exists()) {
-          license = await File(licensePath + '.md').readAsString();
+        if (await File('$licensePath.md').exists()) {
+          license = await File('$licensePath.md').readAsString();
           isMarkdown = true;
         }
       }
