@@ -19,12 +19,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: OssLicensesPage(),
+      home: const OssLicensesPage(),
     );
   }
 }
 
 class OssLicensesPage extends StatelessWidget {
+  const OssLicensesPage({super.key});
+
   static Future<List<Package>> loadLicenses() async {
     // merging non-dart dependency list using LicenseRegistry.
     final lm = <String, List<String>>{};
@@ -34,7 +36,7 @@ class OssLicensesPage extends StatelessWidget {
         lp.addAll(l.paragraphs.map((p) => p.text));
       }
     }
-    final licenses = ossLicenses.toList();
+    final licenses = allDependencies.toList();
     for (var key in lm.keys) {
       licenses.add(Package(
         name: key,
@@ -44,7 +46,7 @@ class OssLicensesPage extends StatelessWidget {
         license: lm[key]!.join('\n\n'),
         isMarkdown: false,
         isSdk: false,
-        isDirectDependency: false,
+        dependencies: [],
       ));
     }
     return licenses..sort((a, b) => a.name.compareTo(b.name));
@@ -86,7 +88,7 @@ class OssLicensesPage extends StatelessWidget {
 class MiscOssLicenseSingle extends StatelessWidget {
   final Package package;
 
-  MiscOssLicenseSingle({required this.package});
+  const MiscOssLicenseSingle({super.key, required this.package});
 
   String _bodyText() {
     return package.license!.split('\n').map((line) {
@@ -107,7 +109,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
                   child: Text(package.description,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold))),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
             if (package.homepage != null)
               Padding(
                   padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
@@ -119,7 +121,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
             if (package.description.isNotEmpty || package.homepage != null) const Divider(),
             Padding(
               padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-              child: Text(_bodyText(), style: Theme.of(context).textTheme.bodyText2),
+              child: Text(_bodyText(), style: Theme.of(context).textTheme.bodyMedium),
             ),
           ])),
     );

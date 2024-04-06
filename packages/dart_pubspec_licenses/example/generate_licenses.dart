@@ -19,14 +19,10 @@ void main(List<String> args) async {
     return;
   }
 
-  final info = await oss.generateLicenseInfo(pubspecLockPath: pubspecLockPath);
+  final deps = await oss.listDependencies(pubspecLockPath: pubspecLockPath);
 
   var firstIteration = true;
-  for (var entry in info) {
-    if (!entry.isDirectDependency) {
-      continue;
-    }
-
+  for (var entry in deps.allDependencies) {
     if (!firstIteration) {
       print('-' * 40);
     }

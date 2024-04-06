@@ -1,3 +1,7 @@
+## 3.0.0
+
+- New data structure to handle dependencies and devDependencies
+
 ## 2.0.3
 
 - Downgrade meta to 1.11.0
