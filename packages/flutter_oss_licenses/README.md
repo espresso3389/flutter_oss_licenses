@@ -12,7 +12,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```yaml
 dev_dependencies:
-  flutter_oss_licenses: ^3.0.0
+  flutter_oss_licenses: ^3.0.2
 ```
 
 ## Generate oss_licenses.dart
@@ -100,14 +100,14 @@ class Package {
 
 ...
 
-/// dart_pubspec_licenses 2.0.3
+/// dart_pubspec_licenses 3.0.1
 const _dart_pubspec_licenses = Package(
     name: 'dart_pubspec_licenses',
     description: 'A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '2.0.3',
+    version: '3.0.1',
     license: '''MIT License
 
 Copyright (c) 2019 Takashi Kawasaki
@@ -130,8 +130,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
     isMarkdown: false,
-    isSdk: true,
-    dependencies: [_yaml, _path, _json_annotation]
+    isSdk: false,
+    dependencies: [PackageRef('yaml'), PackageRef('path'), PackageRef('json_annotation')]
   );
 
 ...

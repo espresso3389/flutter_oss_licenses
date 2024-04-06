@@ -1,3 +1,11 @@
+## 3.0.2
+
+- Minor fixes
+
+## 3.0.1
+
+- Minor fixes
+
 ## 3.0.0
 
 - New data structure to handle dependencies and devDependencies
