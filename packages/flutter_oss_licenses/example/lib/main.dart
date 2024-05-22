@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'oss_licenses.dart';
 
@@ -116,7 +116,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
                   child: InkWell(
                     child: Text(package.homepage!,
                         style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
-                    onTap: () => launch(package.homepage!),
+                    onTap: () => launchUrlString(package.homepage!),
                   )),
             if (package.description.isNotEmpty || package.homepage != null) const Divider(),
             Padding(
