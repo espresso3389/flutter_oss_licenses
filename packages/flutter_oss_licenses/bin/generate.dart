@@ -40,11 +40,12 @@ main(List<String> args) async {
     } else {
       final sb = StringBuffer();
       String toQuotedString(String s) {
+        s = s.replaceAll('\$', '\\\$');
         final quoteCount = "'".allMatches(s).length;
         final doubleQuoteCount = '"'.allMatches(s).length;
         final quote = quoteCount > doubleQuoteCount ? '"' : "'";
         if (!s.contains('\n')) {
-          return quote + s.replaceAll(quote, "\\$quote").replaceAll('\$', '\\\$') + quote;
+          return quote + s.replaceAll(quote, "\\$quote") + quote;
         }
         final q3 = quote * 3;
         return q3 + s.replaceAll(q3, '\\$quote' * 3) + q3;
