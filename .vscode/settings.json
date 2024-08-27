@@ -9,12 +9,9 @@
     "userprofile",
     "writeln"
   ],
-  "[dart]": {
-    "editor.formatOnSave": true,
-    "editor.formatOnType": true,
-    "editor.rulers": [
-      120
-    ]
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
   },
   "dart.lineLength": 120,
   "dart.projectSearchDepth": 5

@@ -1,11 +1,10 @@
-#!/usr/bin/env dart
+// A command-line tool to print license information for all direct
+// (non-transitive and non-development) dependencies from a Dart project's
+// pubspec.lock file.
+//
+// Takes a path to the Dart project as an argument.  If no argument is
+// specified, uses the current working directory.
 
-/// A command-line tool to print license information for all direct
-/// (non-transitive and non-development) dependencies from a Dart project's
-/// `pubspec.lock` file.
-///
-/// Takes a path to the Dart project as an argument.  If no argument is
-/// specified, uses the current working directory.
 import 'dart:io' as io;
 
 import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
@@ -20,14 +19,10 @@ void main(List<String> args) async {
     return;
   }
 
-  final info = await oss.generateLicenseInfo(pubspecLockPath: pubspecLockPath);
+  final deps = await oss.listDependencies(pubspecLockPath: pubspecLockPath);
 
   var firstIteration = true;
-  for (var entry in info) {
-    if (!(entry.isDirectDependency ?? false)) {
-      continue;
-    }
-
+  for (var entry in deps.allDependencies) {
     if (!firstIteration) {
       print('-' * 40);
     }

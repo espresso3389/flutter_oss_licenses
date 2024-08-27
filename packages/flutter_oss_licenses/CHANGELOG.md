@@ -1,3 +1,24 @@
+## 3.0.2
+
+- Minor fixes
+
+## 3.0.1
+
+- Minor fixes
+
+## 3.0.0
+
+- New data structure to handle dependencies and devDependencies
+
+## 2.0.3
+
+- Downgrade meta to 1.11.0
+
+## 2.0.2
+
+- Internal generation logic update
+- Dependency updates
+
 ## 2.0.1
 
 - dart_pubspec_licenses 2.0.2
@@ -62,7 +83,7 @@
 
 ## 0.6.0
 
-- *BREAKING CHANGE*: The output format is completely changed to provide more information about packages.
+- _BREAKING CHANGE_: The output format is completely changed to provide more information about packages.
 
 ## 0.5.2
 

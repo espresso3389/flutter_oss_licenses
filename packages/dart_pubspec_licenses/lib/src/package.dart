@@ -1,16 +1,30 @@
 import 'dart:io';
 
-import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-part 'package.g.dart';
+class ProjectDependencies {
+  // Direct dependencies
+  final List<Package> dependencies;
 
-@JsonSerializable(explicitToJson: true)
-class Package {
-  @JsonKey(ignore: true)
+  const ProjectDependencies({
+    required this.dependencies,
+  });
+}
+
+class AllProjectDependencies extends ProjectDependencies {
+  // Direct devDependencies
+  final List<Package> devDependencies;
+
+  /// All dependencies, including transitive dependencies
+  final List<Package> allDependencies;
+
+  const AllProjectDependencies(
+      {required super.dependencies, required this.devDependencies, required this.allDependencies});
+}
+
+class Package extends ProjectDependencies {
   final Directory? directory;
-  @JsonKey(ignore: true)
   final Map? packageYaml;
   final String name;
   final String description;
@@ -21,7 +35,6 @@ class Package {
   final String? license;
   final bool isMarkdown;
   final bool isSdk;
-  final bool isDirectDependency;
 
   const Package({
     this.directory,
@@ -35,12 +48,37 @@ class Package {
     this.license,
     required this.isMarkdown,
     required this.isSdk,
-    required this.isDirectDependency,
+    required super.dependencies,
   });
 
-  factory Package.fromJson(Map<String, dynamic> json) => _$PackageFromJson(json);
-  Map<String, dynamic> toJson() => _$PackageToJson(this);
+  String? get pubspecYamlPath => getFilePath('pubspec.yaml');
+  String? get pubspecLockPath => getFilePath('pubspec.lock');
 
+  String? getFilePath(String name) => directory != null ? path.join(directory!.path, name) : null;
+
+  factory Package.fromJson(Map<String, dynamic> json) => Package(
+        name: json['name'] as String,
+        description: json['description'] as String,
+        homepage: json['homepage'] as String?,
+        repository: json['repository'] as String?,
+        authors: (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
+        version: json['version'] as String,
+        license: json['license'] as String?,
+        isMarkdown: json['isMarkdown'] as bool,
+        isSdk: json['isSdk'] as bool,
+        dependencies: [],
+      );
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'description': description,
+        'homepage': homepage,
+        'repository': repository,
+        'authors': authors,
+        'version': version,
+        'license': license,
+        'isMarkdown': isMarkdown,
+        'isSdk': isSdk,
+      };
 
   static Future<Package?> fromMap({
     required String outerName,
@@ -71,7 +109,6 @@ class Package {
     } else {
       return null;
     }
-    final isDirectDependency = packageJson['dependency'] == "direct main";
 
     String? license;
     bool isMarkdown = false;
@@ -82,8 +119,8 @@ class Package {
       try {
         license = await File(licensePath).readAsString();
       } catch (e) {
-        if (await File(licensePath + '.md').exists()) {
-          license = await File(licensePath + '.md').readAsString();
+        if (await File('$licensePath.md').exists()) {
+          license = await File('$licensePath.md').readAsString();
           isMarkdown = true;
         }
       }
@@ -115,18 +152,19 @@ class Package {
     }
 
     return Package(
-        directory: directory,
-        packageYaml: yaml,
-        name: name,
-        description: description,
-        homepage: yaml['homepage'],
-        repository: yaml['repository'],
-        authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
-        version: version.trim(),
-        license: license?.trim().replaceAll('\r\n', '\n'),
-        isMarkdown: isMarkdown,
-        isSdk: isSdk,
-        isDirectDependency: isDirectDependency);
+      directory: directory,
+      packageYaml: yaml,
+      name: name,
+      description: description,
+      homepage: yaml['homepage'],
+      repository: yaml['repository'],
+      authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
+      version: version.trim(),
+      license: license?.trim().replaceAll('\r\n', '\n'),
+      isMarkdown: isMarkdown,
+      isSdk: isSdk,
+      dependencies: [],
+    );
   }
 }
 
