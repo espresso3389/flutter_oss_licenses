@@ -28,10 +28,8 @@ main(List<String> args) async {
     }
 
     final projectRoot = results['project-root'] ?? await findProjectRoot();
-    final outputFilePath =
-        results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
-    final generateJson = results['json'] ||
-        path.extension(outputFilePath).toLowerCase() == '.json';
+    final outputFilePath = results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
     final deps = await oss.listDependencies(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
       ignore: results['ignore'],
@@ -39,8 +37,7 @@ main(List<String> args) async {
 
     final String output;
     if (generateJson) {
-      output = const JsonEncoder.withIndent('  ')
-          .convert(deps.allDependencies.map((e) => e.toJson()).toList());
+      output = const JsonEncoder.withIndent('  ').convert(deps.allDependencies.map((e) => e.toJson()).toList());
     } else {
       final sb = StringBuffer();
       String toQuotedString(String s) {
@@ -48,9 +45,7 @@ main(List<String> args) async {
         final doubleQuoteCount = '"'.allMatches(s).length;
         final quote = quoteCount > doubleQuoteCount ? '"' : "'";
         if (!s.contains('\n')) {
-          return quote +
-              s.replaceAll(quote, "\\$quote").replaceAll('\$', '\\\$') +
-              quote;
+          return quote + s.replaceAll(quote, "\\$quote").replaceAll('\$', '\\\$') + quote;
         }
         final q3 = quote * 3;
         return q3 + s.replaceAll(q3, '\\$quote' * 3) + q3;
@@ -90,8 +85,7 @@ main(List<String> args) async {
         writeIfNotNull('license', l.license);
         writeIfNotNull('isMarkdown', l.isMarkdown);
         writeIfNotNull('isSdk', l.isSdk);
-        sb.writeln(
-            '    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}]');
+        sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}]');
 
         sb.writeln('  );');
         sb.writeln('');
@@ -203,23 +197,15 @@ The default output file path depends on the --json flag:
       `[...] --ignore flutter_oss_licenses --ignore dart_pubspec_licenses`
       ''');
   parser.addOption('project-root',
-      abbr: 'p',
-      defaultsTo: null,
-      help:
-          'Explicitly specify project root directory that contains pubspec.lock.');
+      abbr: 'p', defaultsTo: null, help: 'Explicitly specify project root directory that contains pubspec.lock.');
   parser.addFlag('json',
-      abbr: 'j',
-      defaultsTo: false,
-      negatable: false,
-      help: 'Generate JSON file rather than dart file.');
-  parser.addFlag('help',
-      abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
+      abbr: 'j', defaultsTo: false, negatable: false, help: 'Generate JSON file rather than dart file.');
+  parser.addFlag('help', abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
 
   return parser;
 }
 
 void printUsage(ArgParser parser) {
-  stdout
-      .writeln('Usage: ${path.basename(Platform.script.toString())} [OPTION]');
+  stdout.writeln('Usage: ${path.basename(Platform.script.toString())} [OPTION]');
   stdout.writeln(parser.usage);
 }

@@ -25,16 +25,14 @@ String? guessPubCacheDir() {
     }
   }
 
-  final homeDir =
-      Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+  final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
   if (homeDir != null) {
     return path.join(homeDir, '.pub-cache');
   }
   return null;
 }
 
-Future<AllProjectDependencies> listDependencies(
-    {required String pubspecLockPath}) async {
+Future<AllProjectDependencies> listDependencies({required String pubspecLockPath}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
@@ -57,10 +55,8 @@ Future<AllProjectDependencies> listDependencies(
     ),
   );
 
-  final packagesByName = Map.fromEntries(
-      loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
-  final allDeps =
-      packages.entries.fold<Map<String, List<Package>>>({}, (map, e) {
+  final packagesByName = Map.fromEntries(loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
+  final allDeps = packages.entries.fold<Map<String, List<Package>>>({}, (map, e) {
     final package = packagesByName[e.key];
     if (package != null) {
       map.putIfAbsent(e.value['dependency'], () => []).add(package);
@@ -74,8 +70,8 @@ Future<AllProjectDependencies> listDependencies(
     allDependencies: packagesByName.values.toList(),
   );
   final processed = <String>{};
-  await _createDependencies(processed, projectDependencies, packagesByName,
-      allDeps['direct main'], allDeps['direct dev'], null);
+  await _createDependencies(
+      processed, projectDependencies, packagesByName, allDeps['direct main'], allDeps['direct dev'], null);
   return projectDependencies;
 }
 
@@ -99,34 +95,23 @@ Future<void> _createDependencies(
     final pubspecLock = await File(pubspecYamlPath!).readAsString();
     final pubspec = loadYaml(pubspecLock);
     final dep = pubspec['dependencies'];
-    dependencies ??= dep is YamlMap
-        ? dep.keys
-            .map((e) => packagesByName[e])
-            .where((p) => p != null)
-            .cast<Package>()
-            .toList()
-        : [];
+    dependencies ??=
+        dep is YamlMap ? dep.keys.map((e) => packagesByName[e]).where((p) => p != null).cast<Package>().toList() : [];
     if (projectDependencies is AllProjectDependencies) {
       final devDep = pubspec['dev_dependencies'];
       devDependencies ??= devDep is YamlMap
-          ? devDep.keys
-              .map((e) => packagesByName[e])
-              .where((p) => p != null)
-              .cast<Package>()
-              .toList()
+          ? devDep.keys.map((e) => packagesByName[e]).where((p) => p != null).cast<Package>().toList()
           : [];
     }
   }
 
   for (final dep in dependencies) {
-    await _createDependencies(
-        processed, dep, packagesByName, null, null, dep.pubspecYamlPath);
+    await _createDependencies(processed, dep, packagesByName, null, null, dep.pubspecYamlPath);
   }
   projectDependencies.dependencies.addAll(dependencies);
   if (projectDependencies is AllProjectDependencies) {
     for (final dep in devDependencies!) {
-      await _createDependencies(
-          processed, dep, packagesByName, null, null, dep.pubspecYamlPath);
+      await _createDependencies(processed, dep, packagesByName, null, null, dep.pubspecYamlPath);
     }
     projectDependencies.devDependencies.addAll(devDependencies);
   }
