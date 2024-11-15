@@ -44,18 +44,16 @@ Future<AllProjectDependencies> listDependencies({
   final pubspec = loadYaml(pubspecLock);
   final packages = pubspec['packages'] as YamlMap;
 
-  packages.removeWhere((key, value) => ignore.contains(key));
-
   final loadedPackages = await Future.wait(
-    packages.keys.map(
-      (package) => Package.fromMap(
-        outerName: package,
-        packageJson: packages[package],
-        pubCacheDirPath: pubCacheDir,
-        flutterDir: flutterDir,
-        pubspecLockPath: pubspecLockPath,
-      ),
-    ),
+    packages.keys.where((key) => !ignore.contains(key)).map(
+          (package) => Package.fromMap(
+            outerName: package,
+            packageJson: packages[package],
+            pubCacheDirPath: pubCacheDir,
+            flutterDir: flutterDir,
+            pubspecLockPath: pubspecLockPath,
+          ),
+        ),
   );
 
   final packagesByName = Map.fromEntries(loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
