@@ -14,7 +14,7 @@ dependencies:
   path: ^1.9.0
   meta: ^1.11.0
   yaml: ^3.1.2
-  dart_pubspec_licenses: ^3.0.1
+  dart_pubspec_licenses: ^3.0.2
   # dart_pubspec_licenses:
   #   path: ../dart_pubspec_licenses
   args: ^2.4.2
