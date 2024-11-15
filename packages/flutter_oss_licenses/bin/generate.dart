@@ -34,6 +34,7 @@ main(List<String> args) async {
         path.extension(outputFilePath).toLowerCase() == '.json';
     final deps = await oss.listDependencies(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
+      ignore: results['ignore'],
     );
 
     final String output;
@@ -198,7 +199,8 @@ The default output file path depends on the --json flag:
       splitCommas: true,
       help: '''Ignore packages by name.
       This option can be specified multiple times, or as a comma-separated list.
-      --ignore foo,bar is equivalent to --ignore foo --ignore bar
+      `[...] --ignore flutter_oss_licenses,dart_pubspec_licenses` is equivalent to
+      `[...] --ignore flutter_oss_licenses --ignore dart_pubspec_licenses`
       ''');
   parser.addOption('project-root',
       abbr: 'p',
