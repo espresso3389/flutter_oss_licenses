@@ -32,7 +32,10 @@ String? guessPubCacheDir() {
   return null;
 }
 
-Future<AllProjectDependencies> listDependencies({required String pubspecLockPath}) async {
+Future<AllProjectDependencies> listDependencies({
+  required String pubspecLockPath,
+  List<String> ignore = const [],
+}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
