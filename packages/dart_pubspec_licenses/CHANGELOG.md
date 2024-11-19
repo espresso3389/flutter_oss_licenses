@@ -1,3 +1,11 @@
+## 3.0.3
+
+- Document updates
+
+## 3.0.2
+
+- Merge PR #27 to support ignoring certain packages
+
 ## 3.0.1
 
 - Minor fixes

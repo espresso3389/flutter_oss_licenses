@@ -12,7 +12,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```yaml
 dev_dependencies:
-  flutter_oss_licenses: ^3.0.2
+  flutter_oss_licenses: ^3.0.3
 ```
 
 ## Generate oss_licenses.dart
@@ -82,7 +82,7 @@ class Package {
   /// Whether the package is included in the SDK or not.
   final bool isSdk;
   /// Direct dependencies
-  final List<Package> dependencies;
+  final List<PackageRef> dependencies;
 
   const Package({
     required this.name,
@@ -98,40 +98,51 @@ class Package {
   });
 }
 
-...
+class PackageRef {
+  final String name;
 
-/// dart_pubspec_licenses 3.0.1
-const _dart_pubspec_licenses = Package(
-    name: 'dart_pubspec_licenses',
-    description: 'A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml',
-    homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
-    repository: 'https://github.com/espresso3389/flutter_oss_licenses',
+  const PackageRef(this.name);
+
+  Package resolve() => allDependencies.firstWhere((d) => d.name == name);
+}
+
+/// args 2.6.0
+const _args = Package(
+    name: 'args',
+    description: 'Library for defining parsers for parsing raw command-line arguments into a set of options and values using GNU and POSIX style options.',
+    repository: 'https://github.com/dart-lang/core/main/pkgs/args',
     authors: [],
-    version: '3.0.1',
-    license: '''MIT License
+    version: '2.6.0',
+    license: '''Copyright 2013, the Dart project authors. 
 
-Copyright (c) 2019 Takashi Kawasaki
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('yaml'), PackageRef('path'), PackageRef('json_annotation')]
+    dependencies: []
   );
 
 ...
@@ -155,6 +166,7 @@ The following table lists the acceptable options:
 | Option                        | Abbr. | Description                                                                                                                                                                                                                                                               |
 | ----------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--output OUTPUT_FILE_PATH`   | `-o`  | Specify output file path. If the file extension is .json, --json option is implied anyway. The default output file path depends on the `--json` flag:<br>with `--json`: `PROJECT_ROOT/assets/oss_licenses.json`<br>without `--json`: `PROJECT_ROOT/lib/oss_licenses.dart` |
+| `--ignore PACKAGE[,...]` | `-i` | Ignore packages by names.<br>This option can be specified multiple times, or as a comma-separated list.
 | `--project-root PROJECT_ROOT` | `-p`  | Explicitly specify project root directory that contains `pubspec.lock`.                                                                                                                                                                                                   |
 | `--json`                      | `-j`  | Generate JSON file rather than dart file.                                                                                                                                                                                                                                 |
 | `--help`                      | `-h`  | Show the help.                                                                                                                                                                                                                                                            |
