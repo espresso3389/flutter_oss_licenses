@@ -32,6 +32,7 @@ main(List<String> args) async {
     final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
     final deps = await oss.listDependencies(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
+      ignore: results['ignore'],
     );
 
     final String output;
@@ -186,6 +187,15 @@ The default output file path depends on the --json flag:
   with    --json: PROJECT_ROOT/assets/oss_licenses.json
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
 ''');
+  parser.addMultiOption('ignore',
+      abbr: 'i',
+      defaultsTo: [],
+      splitCommas: true,
+      help: '''Ignore packages by name.
+      This option can be specified multiple times, or as a comma-separated list.
+      `[...] --ignore flutter_oss_licenses,dart_pubspec_licenses` is equivalent to
+      `[...] --ignore flutter_oss_licenses --ignore dart_pubspec_licenses`
+      ''');
   parser.addOption('project-root',
       abbr: 'p', defaultsTo: null, help: 'Explicitly specify project root directory that contains pubspec.lock.');
   parser.addFlag('json',

@@ -32,7 +32,10 @@ String? guessPubCacheDir() {
   return null;
 }
 
-Future<AllProjectDependencies> listDependencies({required String pubspecLockPath}) async {
+Future<AllProjectDependencies> listDependencies({
+  required String pubspecLockPath,
+  List<String> ignore = const [],
+}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw "could not find pub cache directory";
@@ -42,15 +45,15 @@ Future<AllProjectDependencies> listDependencies({required String pubspecLockPath
   final packages = pubspec['packages'] as YamlMap;
 
   final loadedPackages = await Future.wait(
-    packages.keys.map(
-      (package) => Package.fromMap(
-        outerName: package,
-        packageJson: packages[package],
-        pubCacheDirPath: pubCacheDir,
-        flutterDir: flutterDir,
-        pubspecLockPath: pubspecLockPath,
-      ),
-    ),
+    packages.keys.where((key) => !ignore.contains(key)).map(
+          (package) => Package.fromMap(
+            outerName: package,
+            packageJson: packages[package],
+            pubCacheDirPath: pubCacheDir,
+            flutterDir: flutterDir,
+            pubspecLockPath: pubspecLockPath,
+          ),
+        ),
   );
 
   final packagesByName = Map.fromEntries(loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
