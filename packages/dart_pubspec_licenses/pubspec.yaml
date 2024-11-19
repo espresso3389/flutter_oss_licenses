@@ -1,6 +1,6 @@
 name: dart_pubspec_licenses
 description: A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml
-version: 3.0.3
+version: 3.0.4
 homepage: https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses
 repository: https://github.com/espresso3389/flutter_oss_licenses
 

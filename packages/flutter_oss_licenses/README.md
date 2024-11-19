@@ -12,7 +12,7 @@ Adding the package name to `dev_dependencies`; not to `dependencies` because the
 
 ```yaml
 dev_dependencies:
-  flutter_oss_licenses: ^3.0.3
+  flutter_oss_licenses: ^3.0.4
 ```
 
 ## Generate oss_licenses.dart

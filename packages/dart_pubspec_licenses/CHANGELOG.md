@@ -1,3 +1,7 @@
+## 3.0.4
+
+- Minor fixes
+
 ## 3.0.3
 
 - Document updates
