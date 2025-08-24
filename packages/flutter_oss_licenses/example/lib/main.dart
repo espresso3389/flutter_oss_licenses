@@ -16,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Licenses',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const OssLicensesPage(),
     );
   }
@@ -38,16 +36,18 @@ class OssLicensesPage extends StatelessWidget {
     }
     final licenses = allDependencies.toList();
     for (var key in lm.keys) {
-      licenses.add(Package(
-        name: key,
-        description: '',
-        authors: [],
-        version: '',
-        license: lm[key]!.join('\n\n'),
-        isMarkdown: false,
-        isSdk: false,
-        dependencies: [],
-      ));
+      licenses.add(
+        Package(
+          name: key,
+          description: '',
+          authors: [],
+          version: '',
+          license: lm[key]!.join('\n\n'),
+          isMarkdown: false,
+          isSdk: false,
+          dependencies: [],
+        ),
+      );
     }
     return licenses..sort((a, b) => a.name.compareTo(b.name));
   }
@@ -57,31 +57,35 @@ class OssLicensesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Open Source Licenses'),
-        ),
-        body: FutureBuilder<List<Package>>(
-            future: _licenses,
-            initialData: const [],
-            builder: (context, snapshot) {
-              return ListView.separated(
-                  padding: const EdgeInsets.all(0),
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    final package = snapshot.data![index];
-                    return ListTile(
-                      title: Text('${package.name} ${package.version}'),
-                      subtitle: package.description.isNotEmpty ? Text(package.description) : null,
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => MiscOssLicenseSingle(package: package),
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => const Divider());
-            }));
+      appBar: AppBar(title: const Text('Open Source Licenses')),
+      body: FutureBuilder<List<Package>>(
+        future: _licenses,
+        initialData: const [],
+        builder: (context, snapshot) {
+          return ListView.separated(
+            padding: const EdgeInsets.all(0),
+            itemCount: snapshot.data?.length ?? 0,
+            itemBuilder: (context, index) {
+              final package = snapshot.data![index];
+              return ListTile(
+                title: Text('${package.name} ${package.version}'),
+                subtitle: package.description.isNotEmpty
+                    ? Text(package.description)
+                    : null,
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MiscOssLicenseSingle(package: package),
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -91,11 +95,14 @@ class MiscOssLicenseSingle extends StatelessWidget {
   const MiscOssLicenseSingle({super.key, required this.package});
 
   String _bodyText() {
-    return package.license!.split('\n').map((line) {
-      if (line.startsWith('//')) line = line.substring(2);
-      line = line.trim();
-      return line;
-    }).join('\n');
+    return package.license!
+        .split('\n')
+        .map((line) {
+          if (line.startsWith('//')) line = line.substring(2);
+          line = line.trim();
+          return line;
+        })
+        .join('\n');
   }
 
   @override
@@ -103,27 +110,57 @@ class MiscOssLicenseSingle extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('${package.name} ${package.version}')),
       body: Container(
-          color: Theme.of(context).canvasColor,
-          child: ListView(children: <Widget>[
+        color: Theme.of(context).canvasColor,
+        child: ListView(
+          children: <Widget>[
             if (package.description.isNotEmpty)
               Padding(
-                  padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                  child: Text(package.description,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold))),
+                padding: const EdgeInsets.only(
+                  top: 12.0,
+                  left: 12.0,
+                  right: 12.0,
+                ),
+                child: Text(
+                  package.description,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
             if (package.homepage != null)
               Padding(
-                  padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                  child: InkWell(
-                    child: Text(package.homepage!,
-                        style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
-                    onTap: () => launchUrlString(package.homepage!),
-                  )),
-            if (package.description.isNotEmpty || package.homepage != null) const Divider(),
+                padding: const EdgeInsets.only(
+                  top: 12.0,
+                  left: 12.0,
+                  right: 12.0,
+                ),
+                child: InkWell(
+                  child: Text(
+                    package.homepage!,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onTap: () => launchUrlString(package.homepage!),
+                ),
+              ),
+            if (package.description.isNotEmpty || package.homepage != null)
+              const Divider(),
             Padding(
-              padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-              child: Text(_bodyText(), style: Theme.of(context).textTheme.bodyMedium),
+              padding: const EdgeInsets.only(
+                top: 12.0,
+                left: 12.0,
+                right: 12.0,
+              ),
+              child: Text(
+                _bodyText(),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

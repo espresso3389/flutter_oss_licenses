@@ -3,29 +3,17 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
-class ProjectDependencies {
-  // Direct dependencies
-  final List<Package> dependencies;
-
-  const ProjectDependencies({
-    required this.dependencies,
-  });
-}
-
-class AllProjectDependencies extends ProjectDependencies {
-  // Direct devDependencies
-  final List<Package> devDependencies;
-
-  /// All dependencies, including transitive dependencies
+class ProjectStructure {
+  final Package package;
   final List<Package> allDependencies;
+  final String pubspecLockPath;
 
-  const AllProjectDependencies(
-      {required super.dependencies, required this.devDependencies, required this.allDependencies});
+  const ProjectStructure({required this.package, required this.allDependencies, required this.pubspecLockPath});
 }
 
-class Package extends ProjectDependencies {
-  final Directory? directory;
-  final Map? packageYaml;
+class Package {
+  final Directory directory;
+  final Map? pubspec;
   final String name;
   final String description;
   final String? homepage;
@@ -35,10 +23,12 @@ class Package extends ProjectDependencies {
   final String? license;
   final bool isMarkdown;
   final bool isSdk;
+  final List<Package> dependencies;
+  final List<Package> devDependencies;
 
   const Package({
-    this.directory,
-    this.packageYaml,
+    required this.directory,
+    this.pubspec,
     required this.name,
     required this.description,
     this.homepage,
@@ -48,53 +38,45 @@ class Package extends ProjectDependencies {
     this.license,
     required this.isMarkdown,
     required this.isSdk,
-    required super.dependencies,
+    required this.dependencies,
+    required this.devDependencies,
   });
 
-  String? get pubspecYamlPath => getFilePath('pubspec.yaml');
-  String? get pubspecLockPath => getFilePath('pubspec.lock');
+  String get pubspecYamlPath => getFilePath('pubspec.yaml');
 
-  String? getFilePath(String name) => directory != null ? path.join(directory!.path, name) : null;
+  String getFilePath(String name) => path.join(directory.path, name);
 
-  factory Package.fromJson(Map<String, dynamic> json) => Package(
-        name: json['name'] as String,
-        description: json['description'] as String,
-        homepage: json['homepage'] as String?,
-        repository: json['repository'] as String?,
-        authors: (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
-        version: json['version'] as String,
-        license: json['license'] as String?,
-        isMarkdown: json['isMarkdown'] as bool,
-        isSdk: json['isSdk'] as bool,
-        dependencies: [],
-      );
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'description': description,
-        'homepage': homepage,
-        'repository': repository,
-        'authors': authors,
-        'version': version,
-        'license': license,
-        'isMarkdown': isMarkdown,
-        'isSdk': isSdk,
-      };
+    'name': name,
+    'description': description,
+    'homepage': homepage,
+    'repository': repository,
+    'authors': authors,
+    'version': version,
+    'license': license,
+    'isMarkdown': isMarkdown,
+    'isSdk': isSdk,
+  };
 
-  static Future<Package?> fromMap({
-    required String outerName,
-    required Map packageJson,
+  /// [basePubspecYamlPath] is used to resolve relative path dependencies.
+  /// It should be the path to the pubspec.yaml of the project that depends on this
+  /// package (not the path to this package's pubspec.yaml).
+  static Future<Package?> fromPubspecLockPackageEntry({
+    String? outerName,
+    required Map package,
     required String pubCacheDirPath,
     required String? flutterDir,
-    required String pubspecLockPath,
+    required String basePubspecYamlPath,
   }) async {
     Directory directory;
     bool isSdk = false;
-    final source = packageJson['source'];
-    final desc = packageJson['description'];
+    outerName ??= package['name'];
+    final source = package['source'];
+    final desc = package['description'];
     if (source == 'hosted') {
       final host = removePrefix(desc['url']);
       final name = desc['name'];
-      final version = packageJson['version'];
+      final version = package['version'];
       directory = Directory(path.join(pubCacheDirPath, 'hosted', host.replaceAll('/', '%47'), '$name-$version'));
     } else if (source == 'git') {
       final repo = gitRepoName(desc['url']);
@@ -104,18 +86,27 @@ class Package extends ProjectDependencies {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
       isSdk = true;
     } else if (source == 'path') {
-      directory = Directory(path.absolute(path.dirname(pubspecLockPath), desc['path']));
+      directory = Directory(path.absolute(path.dirname(basePubspecYamlPath), desc['path']));
       isSdk = true;
     } else {
       return null;
     }
+    return await fromDirectory(projectRoot: directory, outerName: outerName, isSdk: isSdk, flutterDir: flutterDir);
+  }
 
+  static Future<Package?> fromDirectory({
+    required Directory projectRoot,
+    String? outerName,
+    bool isSdk = false,
+    String? flutterDir,
+  }) async {
+    //print('Loading package from ${projectRoot.path}');
     String? license;
     bool isMarkdown = false;
     if (outerName == 'flutter' && flutterDir != null) {
       license = await File(path.join(flutterDir, 'LICENSE')).readAsString();
     } else {
-      String licensePath = path.join(directory.path, 'LICENSE');
+      String licensePath = path.join(projectRoot.path, 'LICENSE');
       try {
         license = await File(licensePath).readAsString();
       } catch (e) {
@@ -132,7 +123,7 @@ class Package extends ProjectDependencies {
 
     dynamic yaml;
     try {
-      yaml = loadYaml(await File(path.join(directory.path, 'pubspec.yaml')).readAsString());
+      yaml = loadYaml(await File(path.join(projectRoot.path, 'pubspec.yaml')).readAsString());
     } catch (e) {
       // yaml may not be there
       yaml = {};
@@ -152,8 +143,8 @@ class Package extends ProjectDependencies {
     }
 
     return Package(
-      directory: directory,
-      packageYaml: yaml,
+      directory: projectRoot,
+      pubspec: yaml,
       name: name,
       description: description,
       homepage: yaml['homepage'],
@@ -164,7 +155,26 @@ class Package extends ProjectDependencies {
       isMarkdown: isMarkdown,
       isSdk: isSdk,
       dependencies: [],
+      devDependencies: [],
     );
+  }
+
+  void updateDependencies(Map<String, Package> allPackages) {
+    dependencies.clear();
+    dependencies.addAll(_getDependenciesFor('dependencies', allPackages));
+    devDependencies.clear();
+    devDependencies.addAll(_getDependenciesFor('dev_dependencies', allPackages));
+  }
+
+  List<Package> _getDependenciesFor(String depType, Map<String, Package> allPackages) {
+    final deps = <Package>[];
+    for (final depName in (pubspec?[depType] as YamlMap?)?.keys.cast<String>() ?? const []) {
+      final dep = allPackages[depName];
+      if (dep != null) {
+        deps.add(dep);
+      }
+    }
+    return deps;
   }
 }
 

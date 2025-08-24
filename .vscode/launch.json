@@ -9,6 +9,13 @@
       "request": "launch",
       "type": "dart",
       "program": "packages/flutter_oss_licenses/example/lib/main.dart"
+    },
+    {
+      "name": "Dart",
+      "request": "launch",
+      "type": "dart",
+      "program": "packages/flutter_oss_licenses/bin/generate.dart",
+      "args": ["-p", "${workspaceFolder}/packages/flutter_oss_licenses"]
     }
   ]
 }

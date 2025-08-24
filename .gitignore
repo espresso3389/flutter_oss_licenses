@@ -2,3 +2,6 @@
 .packages
 build/
 
+oss_licenses.dart
+!packages/flutter_oss_licenses/example/lib/oss_licenses.dart
+

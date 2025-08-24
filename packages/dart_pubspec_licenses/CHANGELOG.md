@@ -1,3 +1,9 @@
+## 3.0.5
+
+- pub workspace support
+- flutter_oss_licenses now does nothing but just re-export the functionality of dart_pubspec_licenses and exists for backward compatibility only
+  - Projects had better use dart_pubspec_licenses directly
+
 ## 3.0.4
 
 - Minor fixes

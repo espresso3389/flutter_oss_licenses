@@ -1,0 +1,7 @@
+name: oss_licenses_workspace
+environment:
+  sdk: ^3.9.0
+workspace:
+  - packages/dart_pubspec_licenses
+  - packages/flutter_oss_licenses/example
+  - packages/flutter_oss_licenses

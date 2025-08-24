@@ -26,7 +26,7 @@ flutter pub get
 And then, the following command generates `oss_licenses.dart` on the project's `lib/` directory:
 
 ```shell
-dart run flutter_oss_licenses:generate
+dart run dart_pubspec_licenses:generate
 ```
 
 The following fragment is just a part of generated `lib/oss_licenses.dart`:
@@ -158,7 +158,7 @@ For a full generated sample, see example code's [oss_licenses.dart](https://gith
 The following command line generates JSON file instead of dart file:
 
 ```shell
-dart run flutter_oss_licenses:generate -o licenses.json --json
+dart run dart_pubspec_licenses:generate -o licenses.json --json
 ```
 
 The following table lists the acceptable options:
