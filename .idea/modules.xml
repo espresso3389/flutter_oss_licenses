@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/packages/dart_oss_licenses/dart_oss_licenses.iml" filepath="$PROJECT_DIR$/packages/dart_oss_licenses/dart_oss_licenses.iml" />
-      <module fileurl="file://$PROJECT_DIR$/packages/flutter_oss_licenses/flutter_oss_licenses.iml" filepath="$PROJECT_DIR$/packages/flutter_oss_licenses/flutter_oss_licenses.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/oss_licenses_root.iml" filepath="$PROJECT_DIR$/.idea/oss_licenses_root.iml" />
+<module fileurl="file://$PROJECT_DIR$/packages/dart_pubspec_licenses/melos_dart_pubspec_licenses.iml" filepath="$PROJECT_DIR$/packages/dart_pubspec_licenses/melos_dart_pubspec_licenses.iml" />
+<module fileurl="file://$PROJECT_DIR$/packages/flutter_oss_licenses/example/melos_example.iml" filepath="$PROJECT_DIR$/packages/flutter_oss_licenses/example/melos_example.iml" />
+<module fileurl="file://$PROJECT_DIR$/packages/flutter_oss_licenses/melos_flutter_oss_licenses.iml" filepath="$PROJECT_DIR$/packages/flutter_oss_licenses/melos_flutter_oss_licenses.iml" />
+<module fileurl="file://$PROJECT_DIR$/melos_oss_licenses_workspace.iml" filepath="$PROJECT_DIR$/melos_oss_licenses_workspace.iml" />
     </modules>
   </component>
 </project>

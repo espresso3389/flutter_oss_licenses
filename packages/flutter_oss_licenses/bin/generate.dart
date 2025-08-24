@@ -28,8 +28,11 @@ main(List<String> args) async {
     }
 
     final projectRoot = results['project-root'] ?? await findProjectRoot();
-    final outputFilePath = results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
-    final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
+    final outputFilePath =
+        results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final generateJson =
+        results['json'] ||
+        path.extension(outputFilePath).toLowerCase() == '.json';
     final deps = await oss.listDependencies(
       pubspecLockPath: path.join(projectRoot, 'pubspec.lock'),
       ignore: results['ignore'],
@@ -37,7 +40,9 @@ main(List<String> args) async {
 
     final String output;
     if (generateJson) {
-      output = const JsonEncoder.withIndent('  ').convert(deps.allDependencies.map((e) => e.toJson()).toList());
+      output = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(deps.allDependencies.map((e) => e.toJson()).toList());
     } else {
       final sb = StringBuffer();
       String toQuotedString(String s) {
@@ -86,12 +91,15 @@ main(List<String> args) async {
         writeIfNotNull('license', l.license);
         writeIfNotNull('isMarkdown', l.isMarkdown);
         writeIfNotNull('isSdk', l.isSdk);
-        sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}]');
+        sb.writeln(
+          '    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}]',
+        );
 
         sb.writeln('  );');
         sb.writeln('');
       }
-      output = '''
+      output =
+          '''
 // cSpell:disable
 // ignore_for_file: always_put_required_named_parameters_first
 // ignore_for_file: constant_identifier_names
@@ -182,30 +190,55 @@ Future<String> findProjectRoot({Directory? from}) async {
 ArgParser getArgParser() {
   final parser = ArgParser();
 
-  parser.addOption('output', abbr: 'o', defaultsTo: null, help: '''
+  parser.addOption(
+    'output',
+    abbr: 'o',
+    defaultsTo: null,
+    help: '''
 Specify output file path. If the file extension is .json, --json option is implied anyway.
 The default output file path depends on the --json flag:
   with    --json: PROJECT_ROOT/assets/oss_licenses.json
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
-''');
-  parser.addMultiOption('ignore',
-      abbr: 'i',
-      defaultsTo: [],
-      splitCommas: true,
-      help: '''
+''',
+  );
+  parser.addMultiOption(
+    'ignore',
+    abbr: 'i',
+    defaultsTo: [],
+    splitCommas: true,
+    help: '''
 Ignore packages by names.
 This option can be specified multiple times, or as a comma-separated list.
-''');
-  parser.addOption('project-root',
-      abbr: 'p', defaultsTo: null, help: 'Explicitly specify project root directory that contains pubspec.lock.');
-  parser.addFlag('json',
-      abbr: 'j', defaultsTo: false, negatable: false, help: 'Generate JSON file rather than dart file.');
-  parser.addFlag('help', abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
+''',
+  );
+  parser.addOption(
+    'project-root',
+    abbr: 'p',
+    defaultsTo: null,
+    help:
+        'Explicitly specify project root directory that contains pubspec.lock.',
+  );
+  parser.addFlag(
+    'json',
+    abbr: 'j',
+    defaultsTo: false,
+    negatable: false,
+    help: 'Generate JSON file rather than dart file.',
+  );
+  parser.addFlag(
+    'help',
+    abbr: 'h',
+    defaultsTo: false,
+    negatable: false,
+    help: 'Show the help.',
+  );
 
   return parser;
 }
 
 void printUsage(ArgParser parser) {
-  stdout.writeln('Usage: ${path.basename(Platform.script.toString())} [OPTION]');
+  stdout.writeln(
+    'Usage: ${path.basename(Platform.script.toString())} [OPTION]',
+  );
   stdout.writeln(parser.usage);
 }

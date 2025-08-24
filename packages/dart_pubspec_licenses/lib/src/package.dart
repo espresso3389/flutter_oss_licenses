@@ -7,9 +7,7 @@ class ProjectDependencies {
   // Direct dependencies
   final List<Package> dependencies;
 
-  const ProjectDependencies({
-    required this.dependencies,
-  });
+  const ProjectDependencies({required this.dependencies});
 }
 
 class AllProjectDependencies extends ProjectDependencies {
@@ -19,8 +17,11 @@ class AllProjectDependencies extends ProjectDependencies {
   /// All dependencies, including transitive dependencies
   final List<Package> allDependencies;
 
-  const AllProjectDependencies(
-      {required super.dependencies, required this.devDependencies, required this.allDependencies});
+  const AllProjectDependencies({
+    required super.dependencies,
+    required this.devDependencies,
+    required this.allDependencies,
+  });
 }
 
 class Package extends ProjectDependencies {
@@ -54,31 +55,34 @@ class Package extends ProjectDependencies {
   String? get pubspecYamlPath => getFilePath('pubspec.yaml');
   String? get pubspecLockPath => getFilePath('pubspec.lock');
 
-  String? getFilePath(String name) => directory != null ? path.join(directory!.path, name) : null;
+  String? getFilePath(String name) =>
+      directory != null ? path.join(directory!.path, name) : null;
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(
-        name: json['name'] as String,
-        description: json['description'] as String,
-        homepage: json['homepage'] as String?,
-        repository: json['repository'] as String?,
-        authors: (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
-        version: json['version'] as String,
-        license: json['license'] as String?,
-        isMarkdown: json['isMarkdown'] as bool,
-        isSdk: json['isSdk'] as bool,
-        dependencies: [],
-      );
+    name: json['name'] as String,
+    description: json['description'] as String,
+    homepage: json['homepage'] as String?,
+    repository: json['repository'] as String?,
+    authors: (json['authors'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
+    version: json['version'] as String,
+    license: json['license'] as String?,
+    isMarkdown: json['isMarkdown'] as bool,
+    isSdk: json['isSdk'] as bool,
+    dependencies: [],
+  );
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'description': description,
-        'homepage': homepage,
-        'repository': repository,
-        'authors': authors,
-        'version': version,
-        'license': license,
-        'isMarkdown': isMarkdown,
-        'isSdk': isSdk,
-      };
+    'name': name,
+    'description': description,
+    'homepage': homepage,
+    'repository': repository,
+    'authors': authors,
+    'version': version,
+    'license': license,
+    'isMarkdown': isMarkdown,
+    'isSdk': isSdk,
+  };
 
   static Future<Package?> fromMap({
     required String outerName,
@@ -95,16 +99,27 @@ class Package extends ProjectDependencies {
       final host = removePrefix(desc['url']);
       final name = desc['name'];
       final version = packageJson['version'];
-      directory = Directory(path.join(pubCacheDirPath, 'hosted', host.replaceAll('/', '%47'), '$name-$version'));
+      directory = Directory(
+        path.join(
+          pubCacheDirPath,
+          'hosted',
+          host.replaceAll('/', '%47'),
+          '$name-$version',
+        ),
+      );
     } else if (source == 'git') {
       final repo = gitRepoName(desc['url']);
       final commit = desc['resolved-ref'];
-      directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', desc['path']));
+      directory = Directory(
+        path.join(pubCacheDirPath, 'git/$repo-$commit', desc['path']),
+      );
     } else if (source == 'sdk' && flutterDir != null) {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
       isSdk = true;
     } else if (source == 'path') {
-      directory = Directory(path.absolute(path.dirname(pubspecLockPath), desc['path']));
+      directory = Directory(
+        path.absolute(path.dirname(pubspecLockPath), desc['path']),
+      );
       isSdk = true;
     } else {
       return null;
@@ -132,7 +147,9 @@ class Package extends ProjectDependencies {
 
     dynamic yaml;
     try {
-      yaml = loadYaml(await File(path.join(directory.path, 'pubspec.yaml')).readAsString());
+      yaml = loadYaml(
+        await File(path.join(directory.path, 'pubspec.yaml')).readAsString(),
+      );
     } catch (e) {
       // yaml may not be there
       yaml = {};
@@ -158,7 +175,9 @@ class Package extends ProjectDependencies {
       description: description,
       homepage: yaml['homepage'],
       repository: yaml['repository'],
-      authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
+      authors:
+          yaml['authors']?.cast<String>()?.toList() ??
+          (yaml['author'] != null ? [yaml['author']] : []),
       version: version.trim(),
       license: license?.trim().replaceAll('\r\n', '\n'),
       isMarkdown: isMarkdown,
