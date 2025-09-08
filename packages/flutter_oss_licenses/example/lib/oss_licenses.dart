@@ -37,6 +37,7 @@ const allDependencies = <Package>[
   _fixnum,
   _flutter,
   _flutter_lints,
+  _flutter_web_plugins,
   _frontend_server_client,
   _glob,
   _graphs,
@@ -111,34 +112,34 @@ class Package {
   final String name;
   /// Description
   final String description;
-  /// Website URL
-  final String? homepage;
-  /// Repository URL
-  final String? repository;
   /// Authors
   final List<String> authors;
-  /// Version
-  final String version;
-  /// License
-  final String? license;
   /// Whether the license is in markdown format or not (plain text).
   final bool isMarkdown;
   /// Whether the package is included in the SDK or not.
   final bool isSdk;
   /// Direct dependencies
   final List<PackageRef> dependencies;
+  /// Website URL
+  final String? homepage;
+  /// Repository URL
+  final String? repository;
+  /// Version
+  final String? version;
+  /// License
+  final String? license;
 
   const Package({
     required this.name,
     required this.description,
-    this.homepage,
-    this.repository,
     required this.authors,
-    required this.version,
-    this.license,
     required this.isMarkdown,
     required this.isSdk,
     required this.dependencies,
+    this.homepage,
+    this.repository,
+    this.version,
+    this.license,
   });
 }
 
@@ -1462,6 +1463,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isMarkdown: false,
     isSdk: false,
     dependencies: [PackageRef('lints')]
+  );
+
+/// flutter_web_plugins null
+const _flutter_web_plugins = Package(
+    name: 'flutter_web_plugins',
+    description: 'Library to register Flutter Web plugins',
+    homepage: 'https://flutter.dev',
+    authors: [],
+    isMarkdown: false,
+    isSdk: true,
+    dependencies: [PackageRef('flutter')]
   );
 
 /// frontend_server_client 4.0.0
@@ -3637,7 +3649,7 @@ platform_detect
    limitations under the License.''',
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('url_launcher_platform_interface'), PackageRef('web')]
+    dependencies: [PackageRef('flutter'), PackageRef('flutter_web_plugins'), PackageRef('url_launcher_platform_interface'), PackageRef('web')]
   );
 
 /// url_launcher_windows 3.1.4

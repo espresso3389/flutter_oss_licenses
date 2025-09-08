@@ -4,14 +4,28 @@ import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
 class ProjectStructure {
+  const ProjectStructure({required this.package, required this.allDependencies, required this.pubspecLockPath});
   final Package package;
   final List<Package> allDependencies;
   final String pubspecLockPath;
-
-  const ProjectStructure({required this.package, required this.allDependencies, required this.pubspecLockPath});
 }
 
 class Package {
+  const Package({
+    required this.directory,
+    required this.name,
+    required this.description,
+    required this.authors,
+    required this.isMarkdown,
+    required this.isSdk,
+    required this.dependencies,
+    required this.devDependencies,
+    this.pubspec,
+    this.homepage,
+    this.repository,
+    this.version,
+    this.license,
+  });
   final Directory directory;
   final Map? pubspec;
   final String name;
@@ -19,28 +33,12 @@ class Package {
   final String? homepage;
   final String? repository;
   final List<String> authors;
-  final String version;
+  final String? version;
   final String? license;
   final bool isMarkdown;
   final bool isSdk;
   final List<Package> dependencies;
   final List<Package> devDependencies;
-
-  const Package({
-    required this.directory,
-    this.pubspec,
-    required this.name,
-    required this.description,
-    this.homepage,
-    this.repository,
-    required this.authors,
-    required this.version,
-    this.license,
-    required this.isMarkdown,
-    required this.isSdk,
-    required this.dependencies,
-    required this.devDependencies,
-  });
 
   String get pubspecYamlPath => getFilePath('pubspec.yaml');
 
@@ -62,11 +60,11 @@ class Package {
   /// It should be the path to the pubspec.yaml of the project that depends on this
   /// package (not the path to this package's pubspec.yaml).
   static Future<Package?> fromPubspecLockPackageEntry({
-    String? outerName,
     required Map package,
     required String pubCacheDirPath,
     required String? flutterDir,
     required String basePubspecYamlPath,
+    String? outerName,
   }) async {
     Directory directory;
     bool isSdk = false;
@@ -138,9 +136,6 @@ class Package {
     final version = outerName == 'flutter' && flutterDir != null
         ? await File(path.join(flutterDir, 'version')).readAsString()
         : yaml['version'];
-    if (version is! String) {
-      return null;
-    }
 
     return Package(
       directory: projectRoot,
@@ -150,7 +145,7 @@ class Package {
       homepage: yaml['homepage'],
       repository: yaml['repository'],
       authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
-      version: version.trim(),
+      version: (version as String?)?.trim(),
       license: license?.trim().replaceAll('\r\n', '\n'),
       isMarkdown: isMarkdown,
       isSdk: isSdk,

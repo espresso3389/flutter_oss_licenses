@@ -45,12 +45,12 @@ String findPubspecLock(String pubspecYamlPath) {
 Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List<String> ignore = const []}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
-    throw "could not find pub cache directory";
+    throw 'could not find pub cache directory';
   }
 
   final myPackage = await Package.fromDirectory(projectRoot: Directory(path.dirname(pubspecYamlPath)));
   if (myPackage == null) {
-    throw "could not load package from $pubspecYamlPath";
+    throw 'could not load package from $pubspecYamlPath';
   }
 
   final pubspecLockPath = findPubspecLock(pubspecYamlPath);

@@ -10,7 +10,7 @@ Of course, if you just want to create some program that handles Dart/Flutter dep
 
 ```yaml
 dev_dependencies:
-  dart_pubspec_licenses: ^3.0.4
+  dart_pubspec_licenses: ^3.0.6
 ```
 
 ## Generate oss_licenses.dart
@@ -18,7 +18,7 @@ dev_dependencies:
 Before executing the command, you must update your `pubspec.lock` using `pub get` (or `pub upgrade` if you want).
 
 ```shell
-flutter pub get
+dart pub get
 ```
 
 And then, the following command generates `oss_licenses.dart` on the project's `lib/` directory:
@@ -30,33 +30,32 @@ dart run dart_pubspec_licenses:generate
 The following fragment is just a part of generated `lib/oss_licenses.dart`:
 
 ```dart
+const thisPackage = _example;
+
 const allDependencies = <Package>[
+  __fe_analyzer_shared,
+  _analyzer,
   _args,
-  _collection,
-  _dart_pubspec_licenses,
-  _flutter_lints,
-  _json_annotation,
-  _lints,
-  _meta,
-  _path,
-  _source_span,
-  _string_scanner,
-  _term_glyph,
-  _yaml
+  _async,
+  _boolean_selector,
+  _build,
+  _build_config,
+  _build_daemon,
+  _build_runner,
+  ...
 ];
 
 /// Direct `dependencies`.
 const dependencies = <Package>[
-  _args,
-  _dart_pubspec_licenses,
-  _meta,
-  _path,
-  _yaml
+  _flutter,
+  _cupertino_icons,
+  _url_launcher
 ];
 
 /// Direct `dev_dependencies`.
 const devDependencies = <Package>[
-  _flutter_lints
+  _flutter_lints,
+  _flutter_oss_licenses
 ];
 
 /// Package license definition.
@@ -65,34 +64,34 @@ class Package {
   final String name;
   /// Description
   final String description;
-  /// Website URL
-  final String? homepage;
-  /// Repository URL
-  final String? repository;
   /// Authors
   final List<String> authors;
-  /// Version
-  final String version;
-  /// License
-  final String? license;
   /// Whether the license is in markdown format or not (plain text).
   final bool isMarkdown;
   /// Whether the package is included in the SDK or not.
   final bool isSdk;
   /// Direct dependencies
   final List<PackageRef> dependencies;
+  /// Website URL
+  final String? homepage;
+  /// Repository URL
+  final String? repository;
+  /// Version
+  final String? version;
+  /// License
+  final String? license;
 
   const Package({
     required this.name,
     required this.description,
-    this.homepage,
-    this.repository,
     required this.authors,
-    required this.version,
-    this.license,
     required this.isMarkdown,
     required this.isSdk,
     required this.dependencies,
+    this.homepage,
+    this.repository,
+    this.version,
+    this.license,
   });
 }
 

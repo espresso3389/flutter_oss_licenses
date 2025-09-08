@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:dart_pubspec_licenses/dart_pubspec_licenses.dart' as oss;
 import 'package:path/path.dart' as path;
+
+import '../dart_pubspec_licenses.dart' as oss;
 
 generate(List<String> args) async {
   final parser = getArgParser();
@@ -46,7 +47,7 @@ generate(List<String> args) async {
         final doubleQuoteCount = '"'.allMatches(s).length;
         final quote = quoteCount > doubleQuoteCount ? '"' : "'";
         if (!s.contains('\n')) {
-          return quote + s.replaceAll(quote, "\\$quote") + quote;
+          return quote + s.replaceAll(quote, '\\$quote') + quote;
         }
         final q3 = quote * 3;
         return q3 + s.replaceAll(q3, '\\$quote' * 3) + q3;
@@ -68,7 +69,7 @@ generate(List<String> args) async {
           return;
         }
         if (obj.contains('\n')) {
-          sb.writeln("    $name: ${toQuotedString(obj)},");
+          sb.writeln('    $name: ${toQuotedString(obj)},');
           return;
         }
         sb.writeln('    $name: ${toQuotedString(obj)},');
@@ -126,34 +127,34 @@ class Package {
   final String name;
   /// Description
   final String description;
-  /// Website URL
-  final String? homepage;
-  /// Repository URL
-  final String? repository;
   /// Authors
   final List<String> authors;
-  /// Version
-  final String version;
-  /// License
-  final String? license;
   /// Whether the license is in markdown format or not (plain text).
   final bool isMarkdown;
   /// Whether the package is included in the SDK or not.
   final bool isSdk;
   /// Direct dependencies
   final List<PackageRef> dependencies;
+  /// Website URL
+  final String? homepage;
+  /// Repository URL
+  final String? repository;
+  /// Version
+  final String? version;
+  /// License
+  final String? license;
 
   const Package({
     required this.name,
     required this.description,
-    this.homepage,
-    this.repository,
     required this.authors,
-    required this.version,
-    this.license,
     required this.isMarkdown,
     required this.isSdk,
     required this.dependencies,
+    this.homepage,
+    this.repository,
+    this.version,
+    this.license,
   });
 }
 

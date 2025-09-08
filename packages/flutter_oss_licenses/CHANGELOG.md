@@ -1,3 +1,7 @@
+## 3.0.6
+
+- Further fix.
+
 ## 3.0.5
 
 - flutter_oss_licenses now does nothing but just re-export the functionality of dart_pubspec_licenses and exists for backward compatibility only
