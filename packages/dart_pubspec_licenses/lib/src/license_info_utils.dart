@@ -23,7 +23,8 @@ String? guessPubCacheDir() {
     }
   }
 
-  final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+  final homeDir =
+      Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
   if (homeDir != null) {
     return path.join(homeDir, '.pub-cache');
   }
@@ -35,20 +36,25 @@ String findPubspecLockFromDirectory(Directory from) {
   if (File(pubspecLockPath).existsSync()) {
     return pubspecLockPath;
   }
-  return findPubspecLockFromDirectory(from.parent);
+  return findPubspecLockFromDirectory(from.absolute.parent);
 }
 
 String findPubspecLock(String pubspecYamlPath) {
   return findPubspecLockFromDirectory(Directory(path.dirname(pubspecYamlPath)));
 }
 
-Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List<String> ignore = const []}) async {
+Future<ProjectStructure> listDependencies({
+  required String pubspecYamlPath,
+  List<String> ignore = const [],
+}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw 'could not find pub cache directory';
   }
 
-  final myPackage = await Package.fromDirectory(projectRoot: Directory(path.dirname(pubspecYamlPath)));
+  final myPackage = await Package.fromDirectory(
+    projectRoot: Directory(path.dirname(pubspecYamlPath)),
+  );
   if (myPackage == null) {
     throw 'could not load package from $pubspecYamlPath';
   }
@@ -71,10 +77,14 @@ Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List
         ),
   );
 
-  final packagesByName = Map.fromEntries(loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
+  final packagesByName = Map.fromEntries(
+    loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)),
+  );
 
   final rootDirectory = Directory(path.dirname(pubspecLockPath));
-  final rootPubspecYamlFile = File(path.join(rootDirectory.path, 'pubspec.yaml'));
+  final rootPubspecYamlFile = File(
+    path.join(rootDirectory.path, 'pubspec.yaml'),
+  );
   if (rootPubspecYamlFile.existsSync()) {
     final rootPubspecYaml = loadYaml(await rootPubspecYamlFile.readAsString());
     final workspace = rootPubspecYaml['workspace'] as YamlList?;

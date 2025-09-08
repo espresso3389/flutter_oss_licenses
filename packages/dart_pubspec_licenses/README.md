@@ -10,7 +10,7 @@ Of course, if you just want to create some program that handles Dart/Flutter dep
 
 ```yaml
 dev_dependencies:
-  dart_pubspec_licenses: ^3.0.6
+  dart_pubspec_licenses: ^3.0.7
 ```
 
 ## Generate oss_licenses.dart

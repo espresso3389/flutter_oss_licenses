@@ -1,3 +1,7 @@
+## 3.0.7
+
+- Further fix.
+
 ## 3.0.6
 
 - Further fix.
