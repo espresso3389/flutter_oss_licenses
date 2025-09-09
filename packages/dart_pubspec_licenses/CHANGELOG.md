@@ -1,3 +1,7 @@
+## 3.0.8
+
+- Added comprehensive DartDoc comments to all public APIs for better documentation
+
 ## 3.0.7
 
 - Further fix.

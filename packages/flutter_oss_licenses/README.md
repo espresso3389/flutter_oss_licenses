@@ -2,4 +2,6 @@
 
 ## Deprecation Note
 
-The package is now deprecated. Use [dart_pubspec_licenses](https://pub.dev/packages/dart_pubspec_licenses) instead.
+The package is now deprecated.
+
+Use [dart_pubspec_licenses](https://pub.dev/packages/dart_pubspec_licenses) instead; the package usage is completely identical.
