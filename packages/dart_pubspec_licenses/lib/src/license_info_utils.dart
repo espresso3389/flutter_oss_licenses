@@ -5,7 +5,18 @@ import 'package:yaml/yaml.dart';
 
 import 'package.dart';
 
+/// The Flutter SDK root directory path from `FLUTTER_ROOT` environment variable.
 final flutterDir = Platform.environment['FLUTTER_ROOT'];
+
+/// Attempts to guess the location of the pub cache directory.
+///
+/// Checks in the following order:
+/// 1. `PUB_CACHE` environment variable
+/// 2. Platform-specific default locations:
+///    - Windows: `%APPDATA%/Pub/Cache` or `%LOCALAPPDATA%/Pub/Cache`
+///    - Other: `$HOME/.pub-cache`
+///
+/// Returns the path to the pub cache directory, or null if not found.
 String? guessPubCacheDir() {
   var pubCache = Platform.environment['PUB_CACHE'];
   if (pubCache != null && Directory(pubCache).existsSync()) return pubCache;
@@ -23,14 +34,21 @@ String? guessPubCacheDir() {
     }
   }
 
-  final homeDir =
-      Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+  final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
   if (homeDir != null) {
     return path.join(homeDir, '.pub-cache');
   }
   return null;
 }
 
+/// Finds the `pubspec.lock` file by traversing up the directory tree.
+///
+/// Starts from [from] directory and searches for `pubspec.lock`,
+/// moving up to parent directories until found.
+///
+/// Returns the path to the `pubspec.lock` file.
+///
+/// Throws if `pubspec.lock` is not found in the directory hierarchy.
 String findPubspecLockFromDirectory(Directory from) {
   final pubspecLockPath = path.join(from.path, 'pubspec.lock');
   if (File(pubspecLockPath).existsSync()) {
@@ -39,22 +57,35 @@ String findPubspecLockFromDirectory(Directory from) {
   return findPubspecLockFromDirectory(from.absolute.parent);
 }
 
+/// Finds the `pubspec.lock` file for a given pubspec.yaml path.
+///
+/// Searches for `pubspec.lock` starting from the directory containing
+/// the specified [pubspecYamlPath].
+///
+/// Returns the path to the `pubspec.lock` file.
 String findPubspecLock(String pubspecYamlPath) {
   return findPubspecLockFromDirectory(Directory(path.dirname(pubspecYamlPath)));
 }
 
-Future<ProjectStructure> listDependencies({
-  required String pubspecYamlPath,
-  List<String> ignore = const [],
-}) async {
+/// Lists all dependencies for a project including transitive dependencies.
+///
+/// Analyzes the project at [pubspecYamlPath] and extracts license information
+/// for all dependencies defined in `pubspec.lock`.
+///
+/// The [ignore] parameter allows excluding specific packages by name.
+///
+/// Returns a [ProjectStructure] containing the main package and all dependencies.
+///
+/// Throws if:
+/// - The pub cache directory cannot be found
+/// - The package cannot be loaded from the specified path
+Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List<String> ignore = const []}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw 'could not find pub cache directory';
   }
 
-  final myPackage = await Package.fromDirectory(
-    projectRoot: Directory(path.dirname(pubspecYamlPath)),
-  );
+  final myPackage = await Package.fromDirectory(projectRoot: Directory(path.dirname(pubspecYamlPath)));
   if (myPackage == null) {
     throw 'could not load package from $pubspecYamlPath';
   }
@@ -77,14 +108,10 @@ Future<ProjectStructure> listDependencies({
         ),
   );
 
-  final packagesByName = Map.fromEntries(
-    loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)),
-  );
+  final packagesByName = Map.fromEntries(loadedPackages.where((p) => p != null).map((p) => MapEntry(p!.name, p)));
 
   final rootDirectory = Directory(path.dirname(pubspecLockPath));
-  final rootPubspecYamlFile = File(
-    path.join(rootDirectory.path, 'pubspec.yaml'),
-  );
+  final rootPubspecYamlFile = File(path.join(rootDirectory.path, 'pubspec.yaml'));
   if (rootPubspecYamlFile.existsSync()) {
     final rootPubspecYaml = loadYaml(await rootPubspecYamlFile.readAsString());
     final workspace = rootPubspecYaml['workspace'] as YamlList?;

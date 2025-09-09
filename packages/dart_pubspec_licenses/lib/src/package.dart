@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
+/// Represents the structure of a Dart/Flutter project with its dependencies.
+///
+/// Contains the main [package] information and all resolved [allDependencies],
+/// along with the path to the pubspec.lock file.
 class ProjectStructure {
   const ProjectStructure({required this.package, required this.allDependencies, required this.pubspecLockPath});
   final Package package;
@@ -10,6 +14,14 @@ class ProjectStructure {
   final String pubspecLockPath;
 }
 
+/// Represents a Dart/Flutter package with its metadata and license information.
+///
+/// This class encapsulates all relevant information about a package including:
+/// - Basic metadata (name, description, version)
+/// - Repository information (homepage, repository URL)
+/// - License content and format
+/// - Dependencies and dev dependencies
+/// - Whether it's an SDK package
 class Package {
   const Package({
     required this.directory,
@@ -26,24 +38,60 @@ class Package {
     this.version,
     this.license,
   });
+
+  /// The directory where the package is located.
   final Directory directory;
+
+  /// The parsed pubspec.yaml content as a Map.
   final Map? pubspec;
+
+  /// The name of the package.
   final String name;
+
+  /// A brief description of the package.
   final String description;
+
+  /// The homepage URL, if available.
   final String? homepage;
+
+  /// The repository URL, if available.
   final String? repository;
+
+  /// List of authors as specified in pubspec.yaml.
+  ///
+  /// This can be empty if no authors are specified.
   final List<String> authors;
+
+  /// The package version, if available.
   final String? version;
+
+  /// The full text of the license, if available.
   final String? license;
+
+  /// Whether the license file is in Markdown format.
   final bool isMarkdown;
+
+  /// Whether the package is included in the SDK or not.
   final bool isSdk;
+
+  /// Direct dependencies
   final List<Package> dependencies;
+
+  /// Direct dev dependencies
   final List<Package> devDependencies;
 
+  /// Gets the path to the package's pubspec.yaml file.
   String get pubspecYamlPath => getFilePath('pubspec.yaml');
 
+  /// Gets the full path for a file within the package directory.
+  ///
+  /// [name] is the file name relative to the package root.
   String getFilePath(String name) => path.join(directory.path, name);
 
+  /// Converts the package information to a JSON-serializable map.
+  ///
+  /// Returns a map containing essential package metadata excluding
+  /// internal properties like directory and pubspec.
   Map<String, dynamic> toJson() => <String, dynamic>{
     'name': name,
     'description': description,
@@ -56,9 +104,17 @@ class Package {
     'isSdk': isSdk,
   };
 
+  /// Creates a [Package] instance from a pubspec.lock package entry.
+  ///
+  /// [package] is the package entry from pubspec.lock.
+  /// [pubCacheDirPath] is the path to the pub cache directory.
+  /// [flutterDir] is the Flutter SDK directory path.
   /// [basePubspecYamlPath] is used to resolve relative path dependencies.
   /// It should be the path to the pubspec.yaml of the project that depends on this
   /// package (not the path to this package's pubspec.yaml).
+  /// [outerName] can override the package name from the entry.
+  ///
+  /// Returns a [Package] instance or null if the package cannot be loaded.
   static Future<Package?> fromPubspecLockPackageEntry({
     required Map package,
     required String pubCacheDirPath,
@@ -92,6 +148,15 @@ class Package {
     return await fromDirectory(projectRoot: directory, outerName: outerName, isSdk: isSdk, flutterDir: flutterDir);
   }
 
+  /// Creates a [Package] instance from a directory containing a Dart package.
+  ///
+  /// [projectRoot] is the root directory of the package.
+  /// [outerName] can override the package name from pubspec.yaml.
+  /// [isSdk] indicates whether this is an SDK package.
+  /// [flutterDir] is the Flutter SDK directory path for SDK packages.
+  ///
+  /// Returns a [Package] instance or null if the package cannot be loaded
+  /// (e.g., missing required fields in pubspec.yaml).
   static Future<Package?> fromDirectory({
     required Directory projectRoot,
     String? outerName,
@@ -154,6 +219,10 @@ class Package {
     );
   }
 
+  /// Updates the dependencies and devDependencies lists based on pubspec.yaml.
+  ///
+  /// [allPackages] is a map of all available packages by name, used to
+  /// resolve dependency references from the pubspec.
   void updateDependencies(Map<String, Package> allPackages) {
     dependencies.clear();
     dependencies.addAll(_getDependenciesFor('dependencies', allPackages));
@@ -161,6 +230,12 @@ class Package {
     devDependencies.addAll(_getDependenciesFor('dev_dependencies', allPackages));
   }
 
+  /// Gets the list of packages for a specific dependency type.
+  ///
+  /// [depType] should be either 'dependencies' or 'dev_dependencies'.
+  /// [allPackages] is a map of all available packages by name.
+  ///
+  /// Returns a list of resolved [Package] instances.
   List<Package> _getDependenciesFor(String depType, Map<String, Package> allPackages) {
     final deps = <Package>[];
     for (final depName in (pubspec?[depType] as YamlMap?)?.keys.cast<String>() ?? const []) {
@@ -173,12 +248,23 @@ class Package {
   }
 }
 
+/// Removes the protocol prefix from a URL.
+///
+/// Strips 'https://' or 'http://' from the beginning of [url].
+///
+/// Returns the URL without the protocol prefix.
 String removePrefix(String url) {
   if (url.startsWith('https://')) return url.substring(8);
   if (url.startsWith('http://')) return url.substring(7); // are there any?
   return url;
 }
 
+/// Extracts the repository name from a Git URL.
+///
+/// Takes a Git [url] and extracts the repository name,
+/// removing the .git extension if present.
+///
+/// Returns the repository name.
 String gitRepoName(String url) {
   final name = url.substring(url.lastIndexOf('/') + 1);
   return name.endsWith('.git') ? name.substring(0, name.length - 4) : name;

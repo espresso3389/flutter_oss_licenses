@@ -7,7 +7,16 @@ import 'package:path/path.dart' as path;
 
 import '../dart_pubspec_licenses.dart' as oss;
 
-generate(List<String> args) async {
+/// Generates license information file from project dependencies.
+///
+/// This function analyzes the project's pubspec.yaml and generates either
+/// a Dart file or JSON file containing license information for all dependencies.
+///
+/// This function is intended to typically called from a command-line program's
+/// main function; it parses command-line arguments and handles errors.
+///
+/// Returns an exit code: 0 for success, non-zero for various error conditions.
+Future<int> generate(List<String> args) async {
   final parser = getArgParser();
   final pubCacheDirPath = oss.guessPubCacheDir();
   final results = parser.parse(args);
@@ -177,6 +186,14 @@ ${sb.toString()}''';
   }
 }
 
+/// Finds the project root directory by searching for pubspec.yaml.
+///
+/// Starts from [from] directory (defaults to current directory) and
+/// traverses up the directory tree until a pubspec.yaml file is found.
+///
+/// Returns the path to the project root directory.
+///
+/// Throws if no pubspec.yaml is found in the directory hierarchy.
 Future<String> findProjectRoot({Directory? from}) async {
   from = from ?? Directory.current;
   if (await File(path.join(from.path, 'pubspec.yaml')).exists()) {
@@ -185,6 +202,16 @@ Future<String> findProjectRoot({Directory? from}) async {
   return findProjectRoot(from: from.parent);
 }
 
+/// Creates and configures the argument parser for the generate command.
+///
+/// Defines the following options:
+/// - `--output` / `-o`: Specify output file path
+/// - `--ignore` / `-i`: Ignore packages by names
+/// - `--project-root` / `-p`: Specify project root directory
+/// - `--json` / `-j`: Generate JSON instead of Dart file
+/// - `--help` / `-h`: Show help message
+///
+/// Returns configured [ArgParser] instance.
 ArgParser getArgParser() {
   final parser = ArgParser();
 
@@ -227,6 +254,9 @@ This option can be specified multiple times, or as a comma-separated list.
   return parser;
 }
 
+/// Prints the usage information for the generate command.
+///
+/// Displays the command usage and all available options defined in [parser].
 void printUsage(ArgParser parser) {
   stdout.writeln('Usage: ${path.basename(Platform.script.toString())} [OPTIONS...]');
   stdout.writeln(parser.usage);
