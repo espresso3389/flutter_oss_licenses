@@ -1,3 +1,8 @@
+## 3.0.9
+
+- FIXED: [#30](https://github.com/espresso3389/flutter_oss_licenses/issues/30) `thisPackage` may not be generated correctly
+- Added `devDependencies` field to the `Package` class in generated output
+
 ## 3.0.8
 
 - Added comprehensive DartDoc comments to all public APIs for better documentation
