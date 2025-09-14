@@ -96,8 +96,8 @@ Future<int> generate(List<String> args) async {
         writeIfNotNull('license', l.license);
         writeIfNotNull('isMarkdown', l.isMarkdown);
         writeIfNotNull('isSdk', l.isSdk);
-        sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}]');
-
+        sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}],');
+        sb.writeln('    devDependencies: [${l.devDependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}],');
         sb.writeln('  );');
         sb.writeln('');
       }
@@ -144,6 +144,8 @@ class Package {
   final bool isSdk;
   /// Direct dependencies
   final List<PackageRef> dependencies;
+  /// Direct devDependencies
+  final List<PackageRef> devDependencies;
   /// Website URL
   final String? homepage;
   /// Repository URL
@@ -160,6 +162,7 @@ class Package {
     required this.isMarkdown,
     required this.isSdk,
     required this.dependencies,
+    required this.devDependencies,
     this.homepage,
     this.repository,
     this.version,

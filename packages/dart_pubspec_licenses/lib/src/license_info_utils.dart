@@ -79,7 +79,11 @@ String findPubspecLock(String pubspecYamlPath) {
 /// Throws if:
 /// - The pub cache directory cannot be found
 /// - The package cannot be loaded from the specified path
-Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List<String> ignore = const []}) async {
+Future<ProjectStructure> listDependencies({
+  required String pubspecYamlPath,
+  List<String> ignore = const [],
+  bool generateDevDependencies = true,
+}) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
     throw 'could not find pub cache directory';
@@ -133,6 +137,7 @@ Future<ProjectStructure> listDependencies({required String pubspecYamlPath, List
   }
 
   myPackage.updateDependencies(packagesByName);
+  packagesByName.putIfAbsent(myPackage.name, () => myPackage);
 
   return ProjectStructure(
     package: myPackage,
