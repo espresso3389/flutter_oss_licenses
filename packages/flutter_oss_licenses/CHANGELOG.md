@@ -1,3 +1,7 @@
+## 3.0.7
+
+- Updated dart_pubspec_licenses to 3.0.10 for `isDirectDependency` field in JSON output
+
 ## 3.0.6
 
 - Further fix.

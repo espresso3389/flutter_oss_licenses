@@ -1,3 +1,7 @@
+## 3.0.10
+
+- Added `isDirectDependency` field to JSON output to distinguish direct dependencies from transitive ones ([#16](https://github.com/espresso3389/flutter_oss_licenses/issues/16))
+
 ## 3.0.9
 
 - FIXED: [#30](https://github.com/espresso3389/flutter_oss_licenses/issues/30) `thisPackage` may not be generated correctly

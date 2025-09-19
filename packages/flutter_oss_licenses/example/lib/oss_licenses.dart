@@ -1417,13 +1417,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     devDependencies: [],
   );
 
-/// flutter 3.35.3
+/// flutter 3.35.4
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.35.3',
+    version: '3.35.4',
     license: '''Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -4052,14 +4052,14 @@ SOFTWARE.''',
     devDependencies: [PackageRef('path')],
   );
 
-/// dart_pubspec_licenses 3.0.8
+/// dart_pubspec_licenses 3.0.10
 const _dart_pubspec_licenses = Package(
     name: 'dart_pubspec_licenses',
     description: 'A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.8',
+    version: '3.0.10',
     license: '''MIT License
 
 Copyright (c) 2019 Takashi Kawasaki
@@ -4099,14 +4099,14 @@ const _example = Package(
     devDependencies: [PackageRef('flutter_lints'), PackageRef('flutter_oss_licenses')],
   );
 
-/// flutter_oss_licenses 3.0.6
+/// flutter_oss_licenses 3.0.7
 const _flutter_oss_licenses = Package(
     name: 'flutter_oss_licenses',
     description: 'A tool to generate detail and better OSS license list using pubspec.yaml/lock files.',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/flutter_oss_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.6',
+    version: '3.0.7',
     license: '''MIT License
 
 Copyright (c) 2019 Takashi Kawasaki

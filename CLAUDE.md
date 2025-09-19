@@ -74,7 +74,7 @@ Both packages may need to be released when changes are made:
    - Run `dart test` in `packages/dart_pubspec_licenses/`
    - Run `flutter test` in `packages/flutter_oss_licenses/`
 7. Ensure the example app builds correctly
-   - Run `flutter build web --wasm` in `packages/flutter_oss_licenses/example/viewer` to test the example app
+   - Run `flutter build web --wasm` in `packages/flutter_oss_licenses/example` to test the example app
 8. Commit changes with message "Release flutter_oss_licenses vX.Y.Z" or "Release dart_pubspec_licenses vX.Y.Z"
 9. Tag the commit with `git tag flutter_oss_licenses-vX.Y.Z` or `git tag dart_pubspec_licenses-vX.Y.Z`
 10. Push changes and tags to remote
