@@ -73,13 +73,15 @@ Both packages may need to be released when changes are made:
 6. Run tests to ensure everything works
    - Run `dart test` in `packages/dart_pubspec_licenses/`
    - Run `flutter test` in `packages/flutter_oss_licenses/`
-7. Ensure the example app builds correctly
+7. Ensure the command runs correctly
+   - Run `dart run dart_pubspec_licenses:generate` in `packages/flutter_oss_licenses/example`
+8. Ensure the example app builds correctly
    - Run `flutter build web --wasm` in `packages/flutter_oss_licenses/example` to test the example app
-8. Commit changes with message "Release flutter_oss_licenses vX.Y.Z" or "Release dart_pubspec_licenses vX.Y.Z"
-9. Tag the commit with `git tag flutter_oss_licenses-vX.Y.Z` or `git tag dart_pubspec_licenses-vX.Y.Z`
-10. Push changes and tags to remote
-11. Run `flutter pub publish` in `packages/flutter_oss_licenses/`
-12. If the changes reference GitHub issues or PRs, add comments on them notifying about the new release
+9. Commit changes with message "Release flutter_oss_licenses vX.Y.Z" or "Release dart_pubspec_licenses vX.Y.Z"
+10. Tag the commit with `git tag flutter_oss_licenses-vX.Y.Z` or `git tag dart_pubspec_licenses-vX.Y.Z`
+11. Push changes and tags to remote
+12. Run `flutter pub publish` in `packages/flutter_oss_licenses/`
+13. If the changes reference GitHub issues or PRs, add comments on them notifying about the new release
     - Use `gh issue comment` or `gh pr comment` to notify that the issue/PR has been addressed in the new release
     - If the PR references issues, please also comment on the issues
     - Follow the template below for comments (but modify it as needed):
