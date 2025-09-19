@@ -90,7 +90,7 @@ Future<int> generate(List<String> args) async {
       }
 
       for (final l in deps.allDependencies) {
-        sb.writeln('/// ${l.name} ${l.version}');
+        sb.writeln(l.version != null ? '/// ${l.name} ${l.version}' : '/// ${l.name}');
         sb.writeln('const _${l.name} = Package(');
         writeIfNotNull('name', l.name);
         writeIfNotNull('description', l.description);
@@ -99,6 +99,7 @@ Future<int> generate(List<String> args) async {
         writeIfNotNull('authors', l.authors);
         writeIfNotNull('version', l.version);
         writeIfNotNull('license', l.license);
+        writeIfNotNull('licenseType', l.licenseType);
         writeIfNotNull('isMarkdown', l.isMarkdown);
         writeIfNotNull('isSdk', l.isSdk);
         sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}],');
@@ -159,6 +160,8 @@ class Package {
   final String? version;
   /// License
   final String? license;
+  /// License type detected; "Unknown" if not detected
+  final String licenseType;
 
   const Package({
     required this.name,
@@ -168,6 +171,7 @@ class Package {
     required this.isSdk,
     required this.dependencies,
     required this.devDependencies,
+    required this.licenseType,
     this.homepage,
     this.repository,
     this.version,

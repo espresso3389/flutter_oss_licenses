@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
+import 'license_detector.dart';
+
 /// Represents the structure of a Dart/Flutter project with its dependencies.
 ///
 /// Contains the main [package] information and all resolved [allDependencies],
@@ -32,6 +34,7 @@ class Package {
     required this.isSdk,
     required this.dependencies,
     required this.devDependencies,
+    required this.licenseType,
     this.pubspec,
     this.homepage,
     this.repository,
@@ -68,6 +71,8 @@ class Package {
   /// The full text of the license, if available.
   final String? license;
 
+  final String licenseType;
+
   /// Whether the license file is in Markdown format.
   final bool isMarkdown;
 
@@ -100,6 +105,7 @@ class Package {
     'authors': authors,
     'version': version,
     'license': license,
+    'licenseType': licenseType,
     'isMarkdown': isMarkdown,
     'isSdk': isSdk,
     if (isDirectDependency != null) 'isDirectDependency': isDirectDependency,
@@ -165,24 +171,11 @@ class Package {
     String? flutterDir,
   }) async {
     //print('Loading package from ${projectRoot.path}');
-    String? license;
-    bool isMarkdown = false;
-    if (outerName == 'flutter' && flutterDir != null) {
-      license = await File(path.join(flutterDir, 'LICENSE')).readAsString();
+    late final LicenseResult license;
+    if ((isSdk || outerName == 'flutter') && flutterDir != null) {
+      license = await LicenseDetector.detectFromFile(path.join(flutterDir, 'LICENSE'));
     } else {
-      String licensePath = path.join(projectRoot.path, 'LICENSE');
-      try {
-        license = await File(licensePath).readAsString();
-      } catch (e) {
-        if (await File('$licensePath.md').exists()) {
-          license = await File('$licensePath.md').readAsString();
-          isMarkdown = true;
-        }
-      }
-    }
-
-    if (license == '') {
-      license = null;
+      license = await LicenseDetector.detectFromDirectory(projectRoot.path);
     }
 
     dynamic yaml;
@@ -212,8 +205,9 @@ class Package {
       repository: yaml['repository'],
       authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
       version: (version as String?)?.trim(),
-      license: license?.trim().replaceAll('\r\n', '\n'),
-      isMarkdown: isMarkdown,
+      license: license.content?.trim().replaceAll('\r\n', '\n'),
+      licenseType: license.type,
+      isMarkdown: license.filePath != null && license.filePath!.toLowerCase().endsWith('.md'),
       isSdk: isSdk,
       dependencies: [],
       devDependencies: [],
