@@ -38,7 +38,9 @@ Future<int> generate(List<String> args) async {
     }
 
     final projectRoot = results['project-root'] ?? await findProjectRoot();
-    final outputFilePath = results['output'] ?? path.join(projectRoot, 'lib', 'oss_licenses.dart');
+    final outputFilePath =
+        results['output'] ??
+        (results['json'] ? 'oss_licenses.json' : path.join(projectRoot, 'lib', 'oss_licenses.dart'));
     final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
     final deps = await oss.listDependencies(
       pubspecYamlPath: path.join(projectRoot, 'pubspec.yaml'),
@@ -47,7 +49,10 @@ Future<int> generate(List<String> args) async {
 
     final String output;
     if (generateJson) {
-      output = const JsonEncoder.withIndent('  ').convert(deps.allDependencies.map((e) => e.toJson()).toList());
+      final directDeps = deps.package.dependencies.map((p) => p.name).toSet();
+      output = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(deps.allDependencies.map((e) => e.toJson(isDirectDependency: directDeps.contains(e.name))).toList());
     } else {
       final sb = StringBuffer();
       String toQuotedString(String s) {

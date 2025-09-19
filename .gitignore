@@ -3,6 +3,7 @@
 build/
 
 oss_licenses.dart
+oss_licenses.json
 !packages/flutter_oss_licenses/example/lib/oss_licenses.dart
 
 .claude/

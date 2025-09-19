@@ -92,7 +92,7 @@ class Package {
   ///
   /// Returns a map containing essential package metadata excluding
   /// internal properties like directory and pubspec.
-  Map<String, dynamic> toJson() => <String, dynamic>{
+  Map<String, dynamic> toJson({bool? isDirectDependency}) => <String, dynamic>{
     'name': name,
     'description': description,
     'homepage': homepage,
@@ -102,6 +102,7 @@ class Package {
     'license': license,
     'isMarkdown': isMarkdown,
     'isSdk': isSdk,
+    if (isDirectDependency != null) 'isDirectDependency': isDirectDependency,
   };
 
   /// Creates a [Package] instance from a pubspec.lock package entry.
