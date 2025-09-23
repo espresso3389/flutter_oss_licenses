@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
+import 'limit_concurrency.dart';
 import 'package.dart';
 
 /// The Flutter SDK root directory path from `FLUTTER_ROOT` environment variable.
@@ -74,6 +76,10 @@ String findPubspecLock(String pubspecYamlPath) {
 ///
 /// The [ignore] parameter allows excluding specific packages by name.
 ///
+/// The [generateDevDependencies] flag indicates whether to include dev dependencies.
+///
+/// The [maxConcurrency] parameter limits the number of concurrent package loading operations.
+///
 /// Returns a [ProjectStructure] containing the main package and all dependencies.
 ///
 /// Throws if:
@@ -83,6 +89,7 @@ Future<ProjectStructure> listDependencies({
   required String pubspecYamlPath,
   List<String> ignore = const [],
   bool generateDevDependencies = true,
+  int maxConcurrency = 10,
 }) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
@@ -98,16 +105,19 @@ Future<ProjectStructure> listDependencies({
   final pubspecLock = loadYaml(await File(pubspecLockPath).readAsString());
   final packages = pubspecLock['packages'] as YamlMap;
 
+  final limitConcurrency = LimitConcurrency(maxConcurrency);
   final loadedPackages = await Future.wait(
     packages.keys
         .where((key) => !ignore.contains(key))
         .map(
-          (package) => Package.fromPubspecLockPackageEntry(
-            outerName: package,
-            package: packages[package],
-            pubCacheDirPath: pubCacheDir,
-            flutterDir: flutterDir,
-            basePubspecYamlPath: pubspecYamlPath,
+          (package) => limitConcurrency.run(
+            () => Package.fromPubspecLockPackageEntry(
+              outerName: package,
+              package: packages[package],
+              pubCacheDirPath: pubCacheDir,
+              flutterDir: flutterDir,
+              basePubspecYamlPath: pubspecYamlPath,
+            ),
           ),
         ),
   );
