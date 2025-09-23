@@ -37,9 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.1
 
-  flutter_oss_licenses:
-    path: ../
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,6 +47,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+
+  flutter_oss_licenses:
+    path: ../
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

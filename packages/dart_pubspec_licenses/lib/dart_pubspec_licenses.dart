@@ -9,6 +9,5 @@
 /// - Support for various package sources (hosted, git, SDK, path)
 library;
 
-export 'src/license_detector.dart';
 export 'src/license_info_utils.dart';
 export 'src/package.dart';
