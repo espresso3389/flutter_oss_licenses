@@ -4099,14 +4099,14 @@ const _example = Package(
     devDependencies: [PackageRef('flutter_lints'), PackageRef('flutter_oss_licenses')],
   );
 
-/// flutter_oss_licenses 3.0.8
+/// flutter_oss_licenses 3.0.9
 const _flutter_oss_licenses = Package(
     name: 'flutter_oss_licenses',
     description: 'A tool to generate detail and better OSS license list using pubspec.yaml/lock files.',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/flutter_oss_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.8',
+    version: '3.0.9',
     license: '''MIT License
 
 Copyright (c) 2019 Takashi Kawasaki
