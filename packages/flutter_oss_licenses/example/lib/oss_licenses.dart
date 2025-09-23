@@ -89,7 +89,6 @@ const allDependencies = <Package>[
   _web_socket_channel,
   _yaml,
   _dart_pubspec_licenses,
-  _example,
   _flutter_oss_licenses
 ];
 
@@ -4087,18 +4086,6 @@ SOFTWARE.''',
     devDependencies: [PackageRef('lints'), PackageRef('json_serializable'), PackageRef('build_runner')],
   );
 
-/// example 1.0.0+1
-const _example = Package(
-    name: 'example',
-    description: 'A new Flutter project.',
-    authors: [],
-    version: '1.0.0+1',
-    isMarkdown: false,
-    isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('cupertino_icons'), PackageRef('url_launcher')],
-    devDependencies: [PackageRef('flutter_lints'), PackageRef('flutter_oss_licenses')],
-  );
-
 /// flutter_oss_licenses 3.0.9
 const _flutter_oss_licenses = Package(
     name: 'flutter_oss_licenses',
@@ -4132,5 +4119,17 @@ SOFTWARE.''',
     isSdk: false,
     dependencies: [PackageRef('path'), PackageRef('meta'), PackageRef('yaml'), PackageRef('dart_pubspec_licenses'), PackageRef('args')],
     devDependencies: [PackageRef('flutter_lints')],
+  );
+
+/// example 1.0.0+1
+const _example = Package(
+    name: 'example',
+    description: 'A new Flutter project.',
+    authors: [],
+    version: '1.0.0+1',
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('cupertino_icons'), PackageRef('url_launcher')],
+    devDependencies: [PackageRef('flutter_lints'), PackageRef('flutter_oss_licenses')],
   );
 

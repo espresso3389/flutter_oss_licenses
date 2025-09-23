@@ -8,9 +8,16 @@ import 'package:yaml/yaml.dart';
 /// Contains the main [package] information and all resolved [allDependencies],
 /// along with the path to the pubspec.lock file.
 class ProjectStructure {
+  /// Creates a [ProjectStructure] instance.
   const ProjectStructure({required this.package, required this.allDependencies, required this.pubspecLockPath});
+
+  /// The main package of the project.
   final Package package;
+
+  /// All dependencies including transitive ones.
   final List<Package> allDependencies;
+
+  /// The path to the `pubspec.lock` file used to resolve dependencies.
   final String pubspecLockPath;
 }
 

@@ -147,7 +147,7 @@ Future<ProjectStructure> listDependencies({
   }
 
   myPackage.updateDependencies(packagesByName);
-  packagesByName.putIfAbsent(myPackage.name, () => myPackage);
+  packagesByName.removeWhere((key, value) => key == myPackage.name);
 
   return ProjectStructure(
     package: myPackage,

@@ -50,9 +50,12 @@ Future<int> generate(List<String> args) async {
     final String output;
     if (generateJson) {
       final directDeps = deps.package.dependencies.map((p) => p.name).toSet();
-      output = const JsonEncoder.withIndent(
-        '  ',
-      ).convert(deps.allDependencies.map((e) => e.toJson(isDirectDependency: directDeps.contains(e.name))).toList());
+      output = const JsonEncoder.withIndent('  ').convert(
+        [
+          ...deps.allDependencies,
+          deps.package,
+        ].map((e) => e.toJson(isDirectDependency: directDeps.contains(e.name))).toList(),
+      );
     } else {
       final sb = StringBuffer();
       String toQuotedString(String s) {
@@ -89,7 +92,7 @@ Future<int> generate(List<String> args) async {
         sb.writeln('    $name: ${toQuotedString(obj)},');
       }
 
-      for (final l in deps.allDependencies) {
+      for (final l in [...deps.allDependencies, deps.package]) {
         sb.writeln('/// ${l.name} ${l.version}');
         sb.writeln('const _${l.name} = Package(');
         writeIfNotNull('name', l.name);
