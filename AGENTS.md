@@ -143,13 +143,12 @@ The following guidelines should be followed when writing documentation including
   - Use sections for different versions
   - Use bullet points for changes
 
-## Special Notes
-
-- `CHANGELOG.md` is not an implementation node. So it should be updated only on releasing a new version
-- For web search, if `gemini` command is available, use `gemini -p "<query>"`.
-
 ## Command Execution Guidelines
 
 - Run commands directly in the repository environment; do not rely on any agent sandbox when executing them.
 - If a command cannot be executed without sandboxing, pause and coordinate with the user so it runs on their machine as needed.
-- On Windows, use `cmd.exe /C ...` to run any commands to reduce issues caused by missing .bat/.cmd and shebang on shell-scripts
+- On Windows, use `pwsh.exe -Command ...` to run any commands to reduce issues caused by missing .bat/.cmd and shebang on shell-scripts
+
+## Special Notes
+
+- `CHANGELOG.md` is not an implementation node. So it should be updated only on releasing a new version
