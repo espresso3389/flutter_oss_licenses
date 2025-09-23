@@ -4051,14 +4051,14 @@ SOFTWARE.''',
     devDependencies: [PackageRef('path')],
   );
 
-/// dart_pubspec_licenses 3.0.11
+/// dart_pubspec_licenses 3.0.12
 const _dart_pubspec_licenses = Package(
     name: 'dart_pubspec_licenses',
     description: 'A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.11',
+    version: '3.0.12',
     license: '''MIT License
 
 Copyright (c) 2019 Takashi Kawasaki

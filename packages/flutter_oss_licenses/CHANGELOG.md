@@ -1,3 +1,8 @@
+## 3.0.10
+
+- Restored the package export so the package once again re-exports `dart_pubspec_licenses`.
+- Updated the bundled `dart_pubspec_licenses` dependency to 3.0.12 so the root package metadata stays in generated outputs.
+
 ## 3.0.9
 
 - Woops, recent releases of flutter_oss_licenses does not contain anything :(
