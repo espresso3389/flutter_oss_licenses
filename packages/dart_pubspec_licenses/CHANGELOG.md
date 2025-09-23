@@ -1,3 +1,8 @@
+## 3.0.12
+
+- Fixed the main package being reported as one of its own dependencies in generated outputs.
+- Ensure generated JSON and Dart constants always include metadata for the root package.
+
 ## 3.0.11
 
 - FIXED: [#31](https://github.com/espresso3389/flutter_oss_licenses/issues/31) Limit concurrent dependency loading to avoid resource exhaustion during generation.
@@ -86,3 +91,4 @@
 ## 1.0.0
 
 - Initial release
+
