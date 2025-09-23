@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI when working with code in this repository.
 
 ## Project Overview
 
@@ -54,7 +54,7 @@ Both packages may need to be released when changes are made:
    - If there are breaking changes, increment the minor version (X.Y.Z -> X.Y+1.0)
    - If there are major changes, increment the major version (X.Y.Z -> X+1.0.0)
 2. Update `packages/dart_pubspec_licenses/CHANGELOG.md` with changes
-   - Don't mention CI/CD changes and `CLAUDE.md` related changes (unless they are significant)
+   - Don't mention CI/CD changes and `AGENTS.md` related changes (unless they are significant)
 3. Update `packages/dart_pubspec_licenses/README.md` if needed
 4. Update `README.md` on the repo root if needed
 5. Run `dart pub publish` in `packages/dart_pubspec_licenses/`
@@ -91,7 +91,7 @@ Both packages may need to be released when changes are made:
 
       ...Fix/update summary...
 
-      Written by 🤖[Claude Code](https://claude.ai/code)
+      Written by [AI AGENT NAME/SIGNATURE HERE]
       ```
 
     - Focus on the release notes and what was fixed/changed rather than upgrade instructions
@@ -147,3 +147,9 @@ The following guidelines should be followed when writing documentation including
 
 - `CHANGELOG.md` is not an implementation node. So it should be updated only on releasing a new version
 - For web search, if `gemini` command is available, use `gemini -p "<query>"`.
+
+## Command Execution Guidelines
+
+- Run commands directly in the repository environment; do not rely on any agent sandbox when executing them.
+- If a command cannot be executed without sandboxing, pause and coordinate with the user so it runs on their machine as needed.
+- On Windows, use `cmd.exe /C ...` to run any commands to reduce issues caused by missing .bat/.cmd and shebang on shell-scripts

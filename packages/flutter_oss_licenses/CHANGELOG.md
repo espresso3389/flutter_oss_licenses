@@ -1,3 +1,7 @@
+## 3.0.8
+
+- Updated dart_pubspec_licenses to 3.0.11 for the concurrency limit fix ([#31](https://github.com/espresso3389/flutter_oss_licenses/issues/31)).
+
 ## 3.0.7
 
 - Updated dart_pubspec_licenses to 3.0.10 for `isDirectDependency` field in JSON output

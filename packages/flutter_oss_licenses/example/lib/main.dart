@@ -46,6 +46,7 @@ class OssLicensesPage extends StatelessWidget {
           isMarkdown: false,
           isSdk: false,
           dependencies: [],
+          devDependencies: const [],
         ),
       );
     }

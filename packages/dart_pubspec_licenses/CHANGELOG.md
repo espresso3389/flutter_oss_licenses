@@ -1,3 +1,7 @@
+## 3.0.11
+
+- FIXED: [#31](https://github.com/espresso3389/flutter_oss_licenses/issues/31) Limit concurrent dependency loading to avoid resource exhaustion during generation.
+
 ## 3.0.10
 
 - Added `isDirectDependency` field to JSON output to distinguish direct dependencies from transitive ones ([#16](https://github.com/espresso3389/flutter_oss_licenses/issues/16))
