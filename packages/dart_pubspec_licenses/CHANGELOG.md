@@ -1,3 +1,8 @@
+## 3.0.13
+
+- Added SPDX license detection to expose `spdxIdentifiers` in generated outputs ([#14](https://github.com/espresso3389/flutter_oss_licenses/issues/14)).
+- Updated the CLI entrypoint to return an exit code for better script integration.
+
 ## 3.0.12
 
 - Fixed the main package being reported as one of its own dependencies in generated outputs.
