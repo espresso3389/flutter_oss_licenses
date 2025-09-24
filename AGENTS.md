@@ -12,6 +12,7 @@ This is a monorepo containing two packages:
 
 2. **flutter_oss_licenses** (`packages/flutter_oss_licenses/`) - A Flutter package for displaying OSS licenses
 
+- No need to release a new release if dart_pubspec_licenses has major some large changes.
 - This package now does nothing but just re-export the functionality of dart_pubspec_licenses.
 - Provides Flutter example that displays licenses in an app
 
@@ -57,7 +58,8 @@ Both packages may need to be released when changes are made:
    - Don't mention CI/CD changes and `AGENTS.md` related changes (unless they are significant)
 3. Update `packages/dart_pubspec_licenses/README.md` if needed
 4. Update `README.md` on the repo root if needed
-5. Run `dart pub publish` in `packages/dart_pubspec_licenses/`
+5. Run `pana` in `packages/dart_pubspec_licenses` to validate code integrity
+6. Run `dart pub publish` in `packages/dart_pubspec_licenses/`
 
 ### For flutter_oss_licenses package updates
 

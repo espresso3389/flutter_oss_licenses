@@ -1,3 +1,7 @@
+## 3.0.11
+
+- Remove unused dependencies and `dart_pubspec_licenses` now doesn't have explicit version specification
+
 ## 3.0.10
 
 - Restored the package export so the package once again re-exports `dart_pubspec_licenses`.
