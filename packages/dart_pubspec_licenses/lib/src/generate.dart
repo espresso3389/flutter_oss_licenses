@@ -101,11 +101,12 @@ Future<int> generate(List<String> args) async {
         writeIfNotNull('repository', l.repository);
         writeIfNotNull('authors', l.authors);
         writeIfNotNull('version', l.version);
-        writeIfNotNull('license', l.license);
+        writeIfNotNull('spdxIdentifiers', l.spdxIdentifiers);
         writeIfNotNull('isMarkdown', l.isMarkdown);
         writeIfNotNull('isSdk', l.isSdk);
         sb.writeln('    dependencies: [${l.dependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}],');
         sb.writeln('    devDependencies: [${l.devDependencies.map((d) => 'PackageRef(\'${d.name}\')').join(', ')}],');
+        writeIfNotNull('license', l.license);
         sb.writeln('  );');
         sb.writeln('');
       }
@@ -162,6 +163,8 @@ class Package {
   final String? version;
   /// License
   final String? license;
+  /// The [SPDX](https://spdx.org/licenses/) license identifiers, if detected.
+  final List<String> spdxIdentifiers;
 
   const Package({
     required this.name,
@@ -175,6 +178,7 @@ class Package {
     this.repository,
     this.version,
     this.license,
+    this.spdxIdentifiers = const [],
   });
 }
 

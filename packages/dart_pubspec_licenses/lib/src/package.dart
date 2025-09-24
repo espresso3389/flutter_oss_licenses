@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:pana/src/license.dart' as pana_license;
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -44,6 +45,7 @@ class Package {
     this.repository,
     this.version,
     this.license,
+    this.spdxIdentifiers = const [],
   });
 
   /// The directory where the package is located.
@@ -74,6 +76,9 @@ class Package {
 
   /// The full text of the license, if available.
   final String? license;
+
+  /// The [SPDX](https://spdx.org/licenses/) license identifiers, if detected.
+  final List<String> spdxIdentifiers;
 
   /// Whether the license file is in Markdown format.
   final bool isMarkdown;
@@ -188,8 +193,14 @@ class Package {
       }
     }
 
+    final spdxIds = <String>[];
     if (license == '') {
       license = null;
+    } else if (license != null) {
+      final detected = await pana_license.detectLicenseInContent(license, relativePath: 'not_used');
+      if (detected.isNotEmpty) {
+        spdxIds.addAll(detected.map((e) => e.spdxIdentifier));
+      }
     }
 
     dynamic yaml;
@@ -220,6 +231,7 @@ class Package {
       authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
       version: (version as String?)?.trim(),
       license: license?.trim().replaceAll('\r\n', '\n'),
+      spdxIdentifiers: spdxIds,
       isMarkdown: isMarkdown,
       isSdk: isSdk,
       dependencies: [],
