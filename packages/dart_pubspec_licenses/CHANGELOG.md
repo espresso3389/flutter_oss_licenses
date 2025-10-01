@@ -1,3 +1,7 @@
+## 3.0.14
+
+- Fixed PathNotFoundException when processing Flutter pre-release versions by reading from `bin/cache/flutter.version.json` instead of `version` file ([#33](https://github.com/espresso3389/flutter_oss_licenses/issues/33)).
+
 ## 3.0.13
 
 - Added SPDX license detection to expose `spdxIdentifiers` in generated outputs ([#14](https://github.com/espresso3389/flutter_oss_licenses/issues/14)).
