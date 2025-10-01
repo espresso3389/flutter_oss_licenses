@@ -1094,13 +1094,13 @@ const _clock = Package(
    limitations under the License.''',
   );
 
-/// code_builder 4.10.1
+/// code_builder 4.11.0
 const _code_builder = Package(
     name: 'code_builder',
     description: 'A fluent, builder-based library for generating valid Dart code.',
     repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/code_builder',
     authors: [],
-    version: '4.10.1',
+    version: '4.11.0',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
@@ -2247,13 +2247,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// leak_tracker 11.0.1
+/// leak_tracker 11.0.2
 const _leak_tracker = Package(
     name: 'leak_tracker',
     description: 'A framework for memory leak tracking for Dart and Flutter applications.',
     repository: 'https://github.com/dart-lang/leak_tracker/tree/main/pkgs/leak_tracker',
     authors: [],
-    version: '11.0.1',
+    version: '11.0.2',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
@@ -3056,18 +3056,18 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// pool 1.5.1
+/// pool 1.5.2
 const _pool = Package(
     name: 'pool',
     description: 'Manage a finite pool of resources. Useful for controlling concurrent file system or network requests.',
-    repository: 'https://github.com/dart-lang/pool',
+    repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/pool',
     authors: [],
-    version: '1.5.1',
+    version: '1.5.2',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
     dependencies: [PackageRef('async'), PackageRef('stack_trace')],
-    devDependencies: [PackageRef('fake_async'), PackageRef('lints'), PackageRef('test')],
+    devDependencies: [PackageRef('fake_async'), PackageRef('test')],
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -4639,13 +4639,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// url_launcher_android 6.3.18
+/// url_launcher_android 6.3.22
 const _url_launcher_android = Package(
     name: 'url_launcher_android',
     description: 'Android implementation of the url_launcher plugin.',
     repository: 'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher_android',
     authors: [],
-    version: '6.3.18',
+    version: '6.3.22',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
@@ -5459,14 +5459,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// dart_pubspec_licenses 3.0.12
+/// dart_pubspec_licenses 3.0.13
 const _dart_pubspec_licenses = Package(
     name: 'dart_pubspec_licenses',
     description: 'A library to make it easy to extract OSS license information from Dart packages using pubspec.yaml',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/dart_pubspec_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.12',
+    version: '3.0.13',
     spdxIdentifiers: ['MIT'],
     isMarkdown: false,
     isSdk: false,
@@ -5495,18 +5495,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// flutter_oss_licenses 3.0.10
+/// flutter_oss_licenses 3.0.11
 const _flutter_oss_licenses = Package(
     name: 'flutter_oss_licenses',
     description: 'A tool to generate detail and better OSS license list using pubspec.yaml/lock files.',
     homepage: 'https://github.com/espresso3389/flutter_oss_licenses/tree/master/packages/flutter_oss_licenses',
     repository: 'https://github.com/espresso3389/flutter_oss_licenses',
     authors: [],
-    version: '3.0.10',
+    version: '3.0.11',
     spdxIdentifiers: ['MIT'],
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('path'), PackageRef('meta'), PackageRef('yaml'), PackageRef('dart_pubspec_licenses'), PackageRef('args')],
+    dependencies: [PackageRef('dart_pubspec_licenses')],
     devDependencies: [PackageRef('flutter_lints')],
     license: '''MIT License
 
