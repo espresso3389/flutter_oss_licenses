@@ -35,7 +35,9 @@ class OssLicensesPage extends StatelessWidget {
       }
     }
     final licenses = allDependencies.toList();
+    final knownNames = licenses.map((p) => p.name).toSet();
     for (var key in lm.keys) {
+      if (knownNames.contains(key)) continue;
       licenses.add(
         Package(
           name: key,
