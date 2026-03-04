@@ -80,6 +80,10 @@ String findPubspecLock(String pubspecYamlPath) {
 ///
 /// The [maxConcurrency] parameter limits the number of concurrent package loading operations.
 ///
+/// When [splitSdkLicenses] is true, the `sky_engine` package's bundled LICENSE
+/// file (which contains 60+ sub-component licenses separated by 80-dash lines)
+/// is split into individual [Package] entries named `sky_engine/<component>`.
+///
 /// Returns a [ProjectStructure] containing the main package and all dependencies.
 ///
 /// Throws if:
@@ -90,6 +94,7 @@ Future<ProjectStructure> listDependencies({
   List<String> ignore = const [],
   bool generateDevDependencies = true,
   int maxConcurrency = 10,
+  bool splitSdkLicenses = false,
 }) async {
   final pubCacheDir = guessPubCacheDir();
   if (pubCacheDir == null) {
@@ -142,6 +147,10 @@ Future<ProjectStructure> listDependencies({
     }
   }
 
+  if (splitSdkLicenses) {
+    _splitSdkLicenses(packagesByName);
+  }
+
   for (final package in packagesByName.values) {
     package.updateDependencies(packagesByName);
   }
@@ -154,4 +163,53 @@ Future<ProjectStructure> listDependencies({
     allDependencies: packagesByName.values.toList(),
     pubspecLockPath: pubspecLockPath,
   );
+}
+
+final _sdkLicenseSeparator = '-' * 80;
+
+void _splitSdkLicenses(Map<String, Package> packagesByName) {
+  final skyEngine = packagesByName['sky_engine'];
+  if (skyEngine == null || skyEngine.license == null) return;
+
+  final parts = skyEngine.license!.split(_sdkLicenseSeparator);
+  if (parts.length <= 1) return;
+
+  // Remove original sky_engine entry; replace with split sub-packages.
+  packagesByName.remove('sky_engine');
+
+  // Group license sections by component name, merging duplicates.
+  final licensesByComponent = <String, List<String>>{};
+  for (final part in parts) {
+    final trimmed = part.trim();
+    if (trimmed.isEmpty) continue;
+
+    // Extract component name from the first non-empty line.
+    final firstLine = trimmed.split('\n').firstWhere(
+      (line) => line.trim().isNotEmpty,
+      orElse: () => '',
+    ).trim();
+    // Skip sections whose "name" is only dashes (partial separator artifact).
+    if (firstLine.isEmpty || RegExp(r'^-+$').hasMatch(firstLine)) continue;
+    licensesByComponent.putIfAbsent(firstLine, () => []).add(trimmed);
+  }
+
+  for (final entry in licensesByComponent.entries) {
+    final component = entry.key;
+    final name = 'sky_engine/$component';
+
+    packagesByName[name] = Package(
+      directory: skyEngine.directory,
+      name: name,
+      description: '${skyEngine.description} - $component',
+      authors: skyEngine.authors,
+      isMarkdown: skyEngine.isMarkdown,
+      isSdk: true,
+      dependencies: [],
+      devDependencies: [],
+      homepage: skyEngine.homepage,
+      repository: skyEngine.repository,
+      version: skyEngine.version,
+      license: entry.value.join('\n\n$_sdkLicenseSeparator\n\n'),
+    );
+  }
 }

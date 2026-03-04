@@ -151,6 +151,10 @@ class Package {
       directory = Directory(path.join(pubCacheDirPath, 'git/$repo-$commit', desc['path']));
     } else if (source == 'sdk' && flutterDir != null) {
       directory = Directory(path.join(flutterDir, 'packages', outerName));
+      if (!directory.existsSync()) {
+        // Some SDK packages (e.g. sky_engine) live in bin/cache/pkg/ instead.
+        directory = Directory(path.join(flutterDir, 'bin', 'cache', 'pkg', outerName));
+      }
       isSdk = true;
     } else if (source == 'path') {
       directory = Directory(path.absolute(path.dirname(basePubspecYamlPath), desc['path']));
@@ -212,7 +216,7 @@ class Package {
     }
 
     final name = yaml['name'];
-    final description = yaml['description'];
+    final description = yaml['description'] ?? (isSdk ? '' : null);
     if (name is! String || description is! String) {
       return null;
     }

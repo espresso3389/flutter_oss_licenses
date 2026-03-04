@@ -1,3 +1,7 @@
+## 3.2.0
+
+- Added `--split-sdk-licenses` flag to split `sky_engine` bundled licenses into separate package entries named `sky_engine/<component>` ([#29](https://github.com/espresso3389/flutter_oss_licenses/issues/29)).
+
 ## 3.1.0
 
 - Update dependencies to deal with recent Flutter/Dart upgrades

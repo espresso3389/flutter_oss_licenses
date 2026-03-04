@@ -7,6 +7,13 @@ import 'package:path/path.dart' as path;
 
 import '../dart_pubspec_licenses.dart' as oss;
 
+/// Sanitizes a package name for use as a Dart identifier.
+///
+/// Replaces characters that are not valid in Dart identifiers (e.g. `/`)
+/// with underscores.
+String _sanitizeIdentifier(String name) =>
+    name.replaceAll(RegExp(r'[^a-zA-Z0-9_$]'), '_');
+
 /// Generates license information file from project dependencies.
 ///
 /// This function analyzes the project's pubspec.yaml and generates either
@@ -46,6 +53,7 @@ Future<int> generate(List<String> args) async {
     final deps = await oss.listDependencies(
       pubspecYamlPath: path.join(projectRoot, 'pubspec.yaml'),
       ignore: results['ignore'],
+      splitSdkLicenses: results['split-sdk-licenses'],
     );
 
     final String output;
@@ -96,7 +104,7 @@ Future<int> generate(List<String> args) async {
 
       for (final l in [...deps.allDependencies, deps.package]) {
         sb.writeln('/// ${l.name} ${l.version}');
-        sb.writeln('const _${l.name} = Package(');
+        sb.writeln('const _${_sanitizeIdentifier(l.name)} = Package(');
         writeIfNotNull('name', l.name);
         writeIfNotNull('description', l.description);
         writeIfNotNull('homepage', l.homepage);
@@ -124,21 +132,21 @@ Future<int> generate(List<String> args) async {
 // https://pub.dev/packages/dart_pubspec_licenses
 
 /// This package.
-const thisPackage = _${deps.package.name};
+const thisPackage = _${_sanitizeIdentifier(deps.package.name)};
 
 /// All dependencies including transitive dependencies.
 const allDependencies = <Package>[
-${deps.allDependencies.map((d) => '  _${d.name}').join(',\n')}
+${deps.allDependencies.map((d) => '  _${_sanitizeIdentifier(d.name)}').join(',\n')}
 ];
 
 /// Direct `dependencies`.
 const dependencies = <Package>[
-${deps.package.dependencies.map((d) => '  _${d.name}').join(',\n')}
+${deps.package.dependencies.map((d) => '  _${_sanitizeIdentifier(d.name)}').join(',\n')}
 ];
 
 /// Direct `dev_dependencies`.
 const devDependencies = <Package>[
-${deps.package.devDependencies.map((d) => '  _${d.name}').join(',\n')}
+${deps.package.devDependencies.map((d) => '  _${_sanitizeIdentifier(d.name)}').join(',\n')}
 ];
 
 /// Package license definition.
@@ -230,6 +238,7 @@ Future<String> findProjectRoot({Directory? from}) async {
 /// - `--ignore` / `-i`: Ignore packages by names
 /// - `--project-root` / `-p`: Specify project root directory
 /// - `--json` / `-j`: Generate JSON instead of Dart file
+/// - `--split-sdk-licenses`: Split `sky_engine` bundled licenses into separate entries
 /// - `--help` / `-h`: Show help message
 ///
 /// Returns configured [ArgParser] instance.
@@ -270,6 +279,12 @@ This option can be specified multiple times, or as a comma-separated list.
     defaultsTo: false,
     negatable: false,
     help: 'Generate JSON file rather than dart file.',
+  );
+  parser.addFlag(
+    'split-sdk-licenses',
+    defaultsTo: false,
+    negatable: false,
+    help: 'Split sky_engine bundled licenses into separate package entries (e.g. sky_engine/<component>).',
   );
   parser.addFlag('help', abbr: 'h', defaultsTo: false, negatable: false, help: 'Show the help.');
 
