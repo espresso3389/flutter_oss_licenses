@@ -41,7 +41,8 @@ Future<int> generate(List<String> args) async {
     final outputFilePath =
         results['output'] ??
         (results['json'] ? 'oss_licenses.json' : path.join(projectRoot, 'lib', 'oss_licenses.dart'));
-    final generateJson = results['json'] || path.extension(outputFilePath).toLowerCase() == '.json';
+    final writeToStdout = outputFilePath == '-';
+    final generateJson = results['json'] || (!writeToStdout && path.extension(outputFilePath).toLowerCase() == '.json');
     final deps = await oss.listDependencies(
       pubspecYamlPath: path.join(projectRoot, 'pubspec.yaml'),
       ignore: results['ignore'],
@@ -193,7 +194,11 @@ class PackageRef {
 ${sb.toString()}''';
     }
 
-    await File(outputFilePath).writeAsString(output);
+    if (writeToStdout) {
+      stdout.write(output);
+    } else {
+      await File(outputFilePath).writeAsString(output);
+    }
     return 0;
   } catch (e, s) {
     stderr.writeln('$e: $s');
@@ -236,6 +241,7 @@ ArgParser getArgParser() {
     defaultsTo: null,
     help: '''
 Specify output file path. If the file extension is .json, --json option is implied anyway.
+Use -o - to write to stdout.
 The default output file path depends on the --json flag:
   with    --json: PROJECT_ROOT/assets/oss_licenses.json
   without --json: PROJECT_ROOT/lib/oss_licenses.dart
