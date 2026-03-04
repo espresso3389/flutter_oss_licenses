@@ -1,3 +1,8 @@
+## 3.2.0
+
+- Updated dart_pubspec_licenses to 3.2.0 for `--split-sdk-licenses` flag ([#29](https://github.com/espresso3389/flutter_oss_licenses/issues/29))
+- Fixed duplicate packages in example app by deduplicating LicenseRegistry entries
+
 ## 3.1.0
 
 - Update dependencies to deal with recent Flutter/Dart upgrades
