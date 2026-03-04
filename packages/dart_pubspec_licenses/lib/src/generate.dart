@@ -49,12 +49,13 @@ Future<int> generate(List<String> args) async {
     );
 
     final String output;
+    final ignore = results['ignore'] as List<String>;
     if (generateJson) {
       final directDeps = deps.package.dependencies.map((p) => p.name).toSet();
       output = const JsonEncoder.withIndent('  ').convert(
         [
           ...deps.allDependencies,
-          deps.package,
+          if (!ignore.contains(deps.package.name)) deps.package,
         ].map((e) => e.toJson(isDirectDependency: directDeps.contains(e.name))).toList(),
       );
     } else {
