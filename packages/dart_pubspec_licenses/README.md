@@ -10,7 +10,7 @@ Of course, if you just want to create some program that handles Dart/Flutter dep
 
 ```yaml
 dev_dependencies:
-  dart_pubspec_licenses: ^3.0.7
+  dart_pubspec_licenses: ^3.1.0
 ```
 
 ## Generate oss_licenses.dart
@@ -147,7 +147,7 @@ The following table lists the acceptable options:
 | Option                        | Abbr. | Description                                                                                                                                                                                                                                                               |
 | ----------------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--output OUTPUT_FILE_PATH`   | `-o`  | Specify output file path. If the file extension is .json, --json option is implied anyway. The default output file path depends on the `--json` flag:<br>with `--json`: `PROJECT_ROOT/assets/oss_licenses.json`<br>without `--json`: `PROJECT_ROOT/lib/oss_licenses.dart` |
-| `--ignore PACKAGE[,...]` | `-i` | Ignore packages by names.<br>This option can be specified multiple times, or as a comma-separated list.
+| `--ignore PACKAGE[,...]`      | `-i`  | Ignore packages by names.<br>This option can be specified multiple times, or as a comma-separated list.                                                                                                                                                                   |
 | `--project-root PROJECT_ROOT` | `-p`  | Explicitly specify project root directory that contains `pubspec.lock`.                                                                                                                                                                                                   |
 | `--json`                      | `-j`  | Generate JSON file rather than dart file.                                                                                                                                                                                                                                 |
 | `--help`                      | `-h`  | Show the help.                                                                                                                                                                                                                                                            |

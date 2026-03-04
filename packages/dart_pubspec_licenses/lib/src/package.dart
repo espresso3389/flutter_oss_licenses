@@ -114,7 +114,7 @@ class Package {
     'license': license,
     'isMarkdown': isMarkdown,
     'isSdk': isSdk,
-    if (isDirectDependency != null) 'isDirectDependency': isDirectDependency,
+    'isDirectDependency': ?isDirectDependency,
   };
 
   /// Creates a [Package] instance from a pubspec.lock package entry.
@@ -197,7 +197,7 @@ class Package {
     if (license == '') {
       license = null;
     } else if (license != null) {
-      final detected = await pana_license.detectLicenseInContent(license, relativePath: 'not_used');
+      final detected = await pana_license.detectLicenseInContent(license);
       if (detected.isNotEmpty) {
         spdxIds.addAll(detected.map((e) => e.spdxIdentifier));
       }

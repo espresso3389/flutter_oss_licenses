@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Update dependencies to deal with recent Flutter/Dart upgrades
+
 ## 3.0.15
 
 - Fixed compatibility with Flutter 3.35.x by pinning pana to ^0.22.20, which uses meta ^1.16.0 ([pdfrx#563](https://github.com/espresso3389/pdfrx/issues/563))
@@ -104,4 +108,3 @@
 ## 1.0.0
 
 - Initial release
-

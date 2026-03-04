@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Update dependencies to deal with recent Flutter/Dart upgrades
+
 ## 3.0.12
 
 - Updated dart_pubspec_licenses to 3.0.15 for Flutter 3.35.x compatibility fix ([pdfrx#563](https://github.com/espresso3389/pdfrx/issues/563))
