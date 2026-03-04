@@ -230,7 +230,7 @@ class Package {
       repository: yaml['repository'],
       authors: yaml['authors']?.cast<String>()?.toList() ?? (yaml['author'] != null ? [yaml['author']] : []),
       version: (version as String?)?.trim(),
-      license: license?.trim().replaceAll('\r\n', '\n'),
+      license: license?.trim().replaceAll('\r\n', '\n').replaceAll(RegExp(r'[ \t]+\n'), '\n'),
       spdxIdentifiers: spdxIds,
       isMarkdown: isMarkdown,
       isSdk: isSdk,
